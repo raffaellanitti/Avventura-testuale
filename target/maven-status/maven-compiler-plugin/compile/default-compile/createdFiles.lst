@@ -1,0 +1,10 @@
+it/uniba/lacasadicenere/parser/ParserOutput.class
+it/uniba/lacasadicenere/parser/Parser.class
+it/uniba/lacasadicenere/entity/Room.class
+it/uniba/lacasadicenere/entity/GameObject.class
+it/uniba/lacasadicenere/LaCasaDiCenere.class
+it/uniba/lacasadicenere/entity/Corridor.class
+it/uniba/lacasadicenere/entity/GameCommand.class
+it/uniba/lacasadicenere/parser/ParserUtils.class
+it/uniba/lacasadicenere/entity/Game.class
+it/uniba/lacasadicenere/entity/CommandType.class
