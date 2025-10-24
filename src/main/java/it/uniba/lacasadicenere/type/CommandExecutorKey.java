@@ -1,0 +1,36 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package it.uniba.lacasadicenere.type;
+
+/**
+ * 
+ */
+public class CommandExecutorKey {
+    
+    private CommandType command;
+    
+    private int args;
+    
+    public CommandExecutorKey(CommandType c, int a) {
+        this.command = c;
+        this.args =  a;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(!(o instanceof CommandExecutorKey)) return false;
+        CommandExecutorKey that = (CommandExecutorKey) o;
+        return command == that.command &&
+                args == that.args;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = command != null ? command.hashCode() : 0;
+        result = 31 * result + args;
+        return result;
+    }
+}

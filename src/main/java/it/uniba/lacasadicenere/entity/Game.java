@@ -4,119 +4,173 @@
  */
 package it.uniba.lacasadicenere.entity;
 
+import it.uniba.lacasadicenere.gui.GameGUI;
+import it.uniba.lacasadicenere.interactionManager.OutputDisplayManager;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Classe che rappresenta il gioco
- * Contiene l'inventario, le stanze e la gestion della stanza
  */
 public class Game {
     
-    /** Lista di oggetti raccolti dal giocatore */
-    private List<GameObject> inventory;
+    /**
+     * Inventario del giocatore
+     */
+    private List<Item> inventory;
     
-    /** Orario attuale di gioco */
-    private String gameTime;
-    
-    /** Stanza in cui si trova il giocatore */
+    /**
+     * Stanza in cui si trova il giocatore
+     */
     private Room currentRoom;
     
-    /** Lista dei corridoi del gioco */
+    /**
+     * 
+     */
+    private String currentTime;
+    
+    /**
+     * Lista di tutti i collegamenti tra le stanza
+     */
     private List<Corridor> corridorMap;
     
-    /** Stato delle stanze (locked o unlocked) */
-    private Map<String, Boolean> roomStatus;
-    
-    /** Istanza singola del gioco (singleton) */
+    /**
+     * Istanza statica e privata della classe Game stessa
+     */
     private static Game game = new Game();
     
-    /** Costruttore principale */
+    /**
+     * Costruttore del gioco
+     */
     public Game() {
-           this.inventory = new ArrayList<>();
-           this.corridorMap = new ArrayList<>();
-           this.roomStatus = new HashMap<>();
+        this.inventory = new ArrayList<>();
+        this.corridorMap = new ArrayList<>();
     }
     
-     public static void setUpGame(Game game) {
+    /**
+     * Imposta l'istanza Singleton
+     * @param game 
+     */
+    public static void setUpGame(Game game) {
         Game.game = game;
     }
-
+    
+    /**
+     * Metodo di accesso all'unica instanza di Game
+     * @return game
+     */
     public static Game getInstance() {
         return game;
     }
-    
-    public List<GameObject> getInventory() {
-        return inventory;
-    }
-    
-     public void addInventory(GameObject object) {
-        game.inventory.add(object);
+
+    /**
+     * @return inventory
+     */
+    public List<Item> getInventory() {
+        return this.inventory;
     }
 
-    public void removeInventory(GameObject object) {
-        game.inventory.remove(object);
+    /**
+     * Aggiunge un oggetto all'inventario del giocatore
+     * @param item 
+     */
+    public void addInventory(Item item) {
+        game.inventory.add(item);
+        List<String> itemsNames = game.inventory.stream().map(Item::getName).toList();
+        String[] itemsNamesArray = itemsNames.toArray(new String[0]);
+        GameGUI.updateInventoryTextArea(itemsNamesArray);
     }
 
+    /** 
+     * Rimuove un oggetto dall'inventario del giocatore
+     * @param item 
+     */
+    public void removeInventory(Item item) {
+        game.inventory.remove(item);
+        List<String> itemsNames = game.inventory.stream().map(Item::getName).toList();
+        String[] itemsNamesArray = itemsNames.toArray(new String[0]);
+        GameGUI.updateInventoryTextArea(itemsNamesArray);
+    }
+
+    /**
+     * Stampa la lista degli oggetti presenti nell'inventario
+     */
     public void printInventory() {
-        System.out.println("> Inventario:");
-        for (GameObject object : game.inventory) {
-            System.out.println(">  - " + object.getName());
+        OutputDisplayManager.displayText("Inventario: ");
+        for (Item item : game.inventory) {
+            OutputDisplayManager.displayText("- " + item.getName());
         }
     }
 
+    /**
+     * @return currentRoom
+     */
     public Room getCurrentRoom() {
         return game.currentRoom;
     }
 
+    /**
+     * Imposta la stanza corrente del giocatore
+     * @param room 
+     */
     public void setCurrentRoom(Room room) {
+        if (game.corridorMap != null) {
+            for (Corridor corridor : game.corridorMap) {
+                if (corridor.getStartingRoom().equals(room)) {
+                    game.currentRoom = corridor.getStartingRoom();
+                    GameGUI.setImagePanel(game.currentRoom.getName());
+                    return;
+                }
+            }
+        }
         game.currentRoom = room;
+        GameGUI.setImagePanel(game.currentRoom.getName());
+
     }
     
-    
-    public String getGameTime() {
-        return game.gameTime;
+    /**
+     * 
+     * @return 
+     */
+    public String getCurrentTime() {
+        return game.currentTime;
     }
 
-    public void setGameTime(String gameTime) {
-        game.gameTime = gameTime;
+    /**
+     *
+     * @param currentTime 
+     */
+    public void setCurrentTime(String currentTime) {
+        game.currentTime = currentTime;
     }
 
+
+    /**
+     * @return corridorMap
+     */
     public List<Corridor> getCorridorMap() {
         return game.corridorMap;
     }
 
-    public void setCorridorMap(List<Corridor> corridorMap) {
-        game.corridorMap = corridorMap;
+    /**
+     * Imposta la mappa dei corridoi
+     * @param corridorsMap 
+     */
+    public void setCorridorMap(List<Corridor> corridorsMap) {
+        game.corridorMap = corridorsMap;
     }
 
     /**
-     * Controlla se una stanza è bloccata
-     * @param roomName nome della stanza
-     * @return true se è locked, false altrimenti
+     * Sblocca un corridoi specifico
+     * @param r1 startingRoom
+     * @param r2 arrivingRoom
      */
-    public boolean getRoomStatus(String roomName) {
-        Boolean locked = game.roomStatus.get(roomName);
-        return locked != null && locked;
-    }
-
-    /**
-     * Blocca o sblocca una stanza
-     * @param roomName nome della stanza
-     * @param locked true per bloccare, false per sbloccare
-     */
-
-    public void setRoomStatus(String roomName, Boolean locked) {
-        if (game.roomStatus == null) {
-            game.roomStatus = new HashMap<>();
-        }
-        game.roomStatus.put(roomName, locked);
-        
-        Room r = Room.findRoom(roomName);
-        if (r != null) {
-           r.setLocked(locked);
+    public void unlockCorridor(String r1, String r2) {
+        for (Corridor corridor : game.corridorMap) {
+            if (corridor.getStartingRoom().getName().equals(r1) && corridor.getArrivingRoom().getName().equals(r2)) {
+                corridor.setLocked(false);
+            }
         }
     }
 }
