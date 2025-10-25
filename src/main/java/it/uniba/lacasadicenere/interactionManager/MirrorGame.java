@@ -34,7 +34,7 @@ public class MirrorGame {
         OutputDisplayManager.displayText(QUESTION);
         OutputDisplayManager.displayText("Scrivi il numero di specchi che vedi:");
     
-        UserInputFlow.Event = 2;
+        UserInputFlow.Event = 1;
     }
 
     public void checkAnswer(String answer) {
@@ -53,12 +53,14 @@ public class MirrorGame {
             
             game.unlockCorridor("Stanza4", "Stanza5");
             
+            OutputDisplayManager.displayText("Hai risposto correttamente! Il passaggio a nord è ora aperto.");
+            
             UserInputFlow.Event = 0;
 
         } else {
             DatabaseConnection.printFromDB("0", "Stanza4", "Sbagliato", "0");
 
-            UserInputFlow.Event = 0;
+            OutputDisplayManager.displayText("Risposta errata. Osserva meglio gli specchi e riprova.");
         }
     }
 
@@ -79,5 +81,10 @@ public class MirrorGame {
 
     public boolean isSolved() {
         return solved;
+    }
+    
+    public static void reset() {
+        solved = false;
+        instance = null;
     }
 }

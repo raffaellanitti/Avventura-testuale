@@ -7,6 +7,8 @@ package it.uniba.lacasadicenere.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Objects;
+
 /**
  * Rappresenta un oggetto presente nel gioco.
  */
@@ -45,6 +47,10 @@ public class Item {
         this.description = description;
         this.isPickable = pickable;
         this.aliases = (aliases != null) ? aliases : new ArrayList<>();
+    }
+
+    public Item() {
+        this("", "", false, new ArrayList<>());
     }
     
     public boolean isPickable() {
@@ -94,5 +100,19 @@ public class Item {
             }
         }
         return false;
+    }
+
+    @Override 
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(!(o instanceof Item)) return false;
+        Item item = (Item) o;
+        return Objects.equals(name, item.name) && 
+                Objects.equals(aliases, item.aliases);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, aliases);
     }
 }

@@ -18,11 +18,12 @@ public class ItemDeserializer implements JsonDeserializer<Item> {
     @Override
     public Item deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
+        Gson defaultGson = new Gson();
         
         if (jsonObject.has("containedItems") && jsonObject.get("containedItems").isJsonArray()) {
-            return context.deserialize(jsonObject, ItemContainer.class);
+            return defaultGson.fromJson(jsonObject, ItemContainer.class);
         } else {
-            return context.deserialize(jsonObject, Item.class);
+            return defaultGson.fromJson(jsonObject, Item.class);
         }
     }
 }

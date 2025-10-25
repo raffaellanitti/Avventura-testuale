@@ -25,21 +25,16 @@ import java.awt.Dimension;
 import java.io.IOException;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
-import javax.imageio.ImageIO;
 
 /**
- *
+ * Menu principale del gioco con sfondo caricato correttamente dal classpath
  */
 public class MenuGUI extends JPanel {
     
     private JPanel backgroundPanel;
-    
     private JButton newGame;
-    
     private JButton help;
-    
     private JButton loadGame;
-    
     private JButton credits;
     
     GameManager gameManager = new GameManager();
@@ -56,29 +51,44 @@ public class MenuGUI extends JPanel {
         final Color COLD_SELECT_COLOR = new Color(100, 120, 140, 100); 
         final Color FOG_BACKGROUND = new Color(30, 30, 35);
         
-        // Sostituisci il metodo paintComponent del backgroundPanel in MenuGUI.java
+        // Background panel con immagine caricata dal classpath
         backgroundPanel = new JPanel() {
-            private final Image image;
+            private Image backgroundImage = null;
 
-        { // Blocco di inizializzazione per caricare l'immagine una sola volta
-            Image tempImage = null;
-            try {
-            // Carica dal classpath (da src/main/resources/img/)
-                tempImage = ImageIO.read(MenuGUI.class.getResourceAsStream("/img/sfondo.png")); 
-            } catch (IOException | IllegalArgumentException | NullPointerException e) {
-                System.err.println("Errore: Immagine sfondo.png non trovata.");
+            { // Blocco di inizializzazione per caricare l'immagine
+                try {
+                    // Carica dal classpath (da src/main/resources/img/)
+                    java.net.URL imageURL = getClass().getResource("/img/sfondo.png");
+                    if (imageURL != null) {
+                        backgroundImage = new ImageIcon(imageURL).getImage();
+                    } else {
+                        System.err.println("ATTENZIONE: Immagine sfondo.png non trovata nel classpath");
+                        // Prova con percorso alternativo per compatibilità
+                        try {
+                            backgroundImage = new ImageIcon("src/main/resources/img/sfondo.png").getImage();
+                        } catch (Exception e2) {
+                            System.err.println("Impossibile caricare sfondo.png anche con percorso alternativo");
+                        }
+                    }
+                } catch (Exception e) {
+                    System.err.println("Errore durante il caricamento dell'immagine di sfondo: " + e.getMessage());
+                }
             }
-            this.image = tempImage;
-        }
 
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            if (image != null) {
-                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (backgroundImage != null) {
+                    // Disegna l'immagine scalata alle dimensioni del pannello
+                    g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                } else {
+                    // Sfondo di fallback se l'immagine non è caricata
+                    g.setColor(FOG_BACKGROUND);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                }
             }
-        }
-    };
+        };
+        
         newGame = new JButton();
         newGame.setAlignmentX(Component.LEFT_ALIGNMENT);
         help = new JButton();
@@ -94,6 +104,7 @@ public class MenuGUI extends JPanel {
         backgroundPanel.setRequestFocusEnabled(false);
         backgroundPanel.setBackground(FOG_BACKGROUND);
         
+        // --- BUTTON NUOVA PARTITA ---
         newGame.setUI(new MetalButtonUI() {
                protected Color getSelectColor() {
                    return COLD_SELECT_COLOR;
@@ -102,30 +113,29 @@ public class MenuGUI extends JPanel {
         newGame.setFocusPainted(false);
         newGame.setBackground(SEMI_TRANSPARENT_BG);
         newGame.setForeground(COLD_LIGHT);
-        newGame.setFont(new Font("Otacon", 1, 24));
+        newGame.setFont(new Font("Otacon", Font.BOLD, 24));
         newGame.setBorderPainted(true);
         newGame.setBorder(BorderFactory.createLineBorder(COLD_LIGHT, 3));
         newGame.setText("NUOVA PARTITA");
         newGame.setOpaque(true);
         newGame.setContentAreaFilled(true);
-        
         newGame.setMaximumSize(new Dimension(240, 60));
         newGame.setMinimumSize(new Dimension(240, 60));
         newGame.setPreferredSize(new Dimension(240, 60));
         newGame.addActionListener(this::newGameActionPerformed);
         
+        // --- BUTTON HELP ---
         help.setUI(new MetalButtonUI() {
             protected Color getSelectColor () {
                 return COLD_SELECT_COLOR;
-
             }
         });
         help.setFocusPainted(false);
         help.setBackground(SEMI_TRANSPARENT_BG);
         help.setForeground(COLD_LIGHT);
-        help.setFont(new Font("Otacon", 1, 24));
+        help.setFont(new Font("Otacon", Font.BOLD, 24));
         help.setBorderPainted(true);
-        help.setBorder(BorderFactory.createLineBorder(COLD_LIGHT,2));
+        help.setBorder(BorderFactory.createLineBorder(COLD_LIGHT, 2));
         help.setMargin(new Insets(0, 0, 0, 0));
         help.setMaximumSize(new Dimension(40, 40));
         help.setMinimumSize(new Dimension(40, 40));
@@ -134,16 +144,16 @@ public class MenuGUI extends JPanel {
         help.setContentAreaFilled(true);
         help.addActionListener(this::helpActionPerformed);
 
+        // --- BUTTON CARICA PARTITA ---
         loadGame.setUI(new MetalButtonUI() {
             protected Color getSelectColor () {
                 return COLD_SELECT_COLOR;
-
             }
         });
         loadGame.setFocusPainted(false);
         loadGame.setBackground(SEMI_TRANSPARENT_BG);
         loadGame.setForeground(COLD_LIGHT);
-        loadGame.setFont(new Font("Otacon", 1, 24));
+        loadGame.setFont(new Font("Otacon", Font.BOLD, 24));
         loadGame.setBorderPainted(true);
         loadGame.setBorder(BorderFactory.createLineBorder(COLD_LIGHT, 3));
         loadGame.setText("CARICA PARTITA");
@@ -160,16 +170,16 @@ public class MenuGUI extends JPanel {
             }
         });
 
+        // --- BUTTON CREDITS ---
         credits.setUI(new MetalButtonUI() {
             protected Color getSelectColor () {
                 return COLD_SELECT_COLOR;
-
             }
         });
         credits.setFocusPainted(false);
         credits.setBackground(SEMI_TRANSPARENT_BG);
         credits.setForeground(COLD_LIGHT);
-        credits.setFont(new Font("Otacon", 1, 24));
+        credits.setFont(new Font("Otacon", Font.BOLD, 24));
         credits.setBorderPainted(true);
         credits.setBorder(BorderFactory.createLineBorder(COLD_LIGHT, 3));
         credits.setText("RICONOSCIMENTI");
@@ -180,13 +190,14 @@ public class MenuGUI extends JPanel {
         credits.setContentAreaFilled(true);
         credits.addActionListener(this::creditsActionPerformed);
 
+        // --- LAYOUT ---
         GroupLayout backgroundPanelLayout = new GroupLayout(backgroundPanel);
         backgroundPanel.setLayout(backgroundPanelLayout);
         
         final int BUTTON_WIDTH = 240;
         final int HORIZONTAL_GAP = 50; 
-        final int TOTAL_BUTTONS_WIDTH = (BUTTON_WIDTH * 2) + HORIZONTAL_GAP; // 530px
-        final int HORIZONTAL_PADDING = (800 - TOTAL_BUTTONS_WIDTH) / 2; // (800 - 530) / 2 = 135px
+        final int TOTAL_BUTTONS_WIDTH = (BUTTON_WIDTH * 2) + HORIZONTAL_GAP;
+        final int HORIZONTAL_PADDING = (800 - TOTAL_BUTTONS_WIDTH) / 2;
         
         backgroundPanelLayout.setHorizontalGroup(
                 backgroundPanelLayout.createParallelGroup(Alignment.LEADING)
@@ -202,8 +213,9 @@ public class MenuGUI extends JPanel {
                                 .addComponent(newGame, GroupLayout.PREFERRED_SIZE, BUTTON_WIDTH, GroupLayout.PREFERRED_SIZE)
                                 .addGap(HORIZONTAL_GAP) 
                                 .addComponent(loadGame, GroupLayout.PREFERRED_SIZE, BUTTON_WIDTH, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(HORIZONTAL_PADDING, Short.MAX_VALUE)) 
+                                .addContainerGap(HORIZONTAL_PADDING, Short.MAX_VALUE))
         );
+        
         backgroundPanelLayout.setVerticalGroup(
             backgroundPanelLayout.createParallelGroup(Alignment.LEADING)
                 .addGroup(backgroundPanelLayout.createSequentialGroup()
@@ -215,9 +227,8 @@ public class MenuGUI extends JPanel {
                     .addGroup(backgroundPanelLayout.createParallelGroup(Alignment.BASELINE)
                         .addComponent(newGame, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
                         .addComponent(loadGame, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE))
-                    .addGap(40)) 
+                    .addGap(40))
         );
-        backgroundPanel.setLayout(backgroundPanelLayout);
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
@@ -232,7 +243,6 @@ public class MenuGUI extends JPanel {
     }
     
     private void newGameActionPerformed(ActionEvent evt) {
-        
         gameManager.createGame();
         Game game = Game.getInstance();
         
@@ -255,9 +265,7 @@ public class MenuGUI extends JPanel {
     private void helpActionPerformed(ActionEvent evt) {
         try {
             HelpGUI helpGUI = HelpGUI.getInstance();
-            
             helpGUI.setLocationRelativeTo(null);
-            
             helpGUI.setVisible(true);
         } catch(Exception e) {
             showMessageDialog(this, "Errore nell'apertura della guida", "Errore", ERROR_MESSAGE);

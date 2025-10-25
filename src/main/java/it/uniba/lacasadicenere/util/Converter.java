@@ -62,7 +62,7 @@ public class Converter {
                 Files.write(gameJson, "{}".getBytes());
             }
             if (!Files.exists(itemsJson)) {
-                Files.write(itemsJson, "{}".getBytes());
+                Files.write(itemsJson, "[]".getBytes());
             }
         } catch (IOException e) {
             throw new RuntimeException("Failed to ensure resource directories exist", e);
@@ -85,11 +85,13 @@ public class Converter {
 
         try {
             byte[] fileBytes = Files.readAllBytes(Paths.get(gameFilePath));
-            if(fileBytes.length == 0) return null;
+            if (fileBytes.length == 0) return new HashMap<>();
 
             JsonReader reader = new JsonReader(new FileReader(gameFilePath));
             Game game = gson.fromJson(reader, Game.class);
             if(game == null) return null;
+
+            Game.setUpGame(game);
 
             if(game.getInventory() != null) {
                 game.getInventory().forEach(item -> items.put(item.getName(), item));
@@ -123,8 +125,6 @@ public class Converter {
             if(game.getCurrentRoom() != null) {
                 game.setCurrentRoom(rooms.get(game.getCurrentRoom().getName()));
             }
-            
-            Game.setUpGame(game);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -145,7 +145,7 @@ public class Converter {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        return items;
+            return items;
     }
 
     /**
@@ -154,15 +154,10 @@ public class Converter {
     public void convertGameToJson() {
         Gson gson = new Gson();
         Game game = Game.getInstance();
-        
-        if (game == null) {
-            throw new RuntimeException("Impossibile salvare.");
-        }
-    
         String json = gson.toJson(game);
 
         try {
-            Files.write(Paths.get("src/main/resources/LoadedGame.json"), json.getBytes());
+            Files.write(Paths.get("src", "main", "resources", "LoadedGame.json"), json.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -189,7 +184,7 @@ public class Converter {
         
         String json = gson.toJson(itemsToSave);
         try {
-            Files.write(Paths.get("src/main/resources/LoadedItems.json"), json.getBytes());
+            Files.write(Paths.get("src", "main", "resources", "LoadedItems.json"), json.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

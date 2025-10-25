@@ -2,6 +2,7 @@ package it.uniba.lacasadicenere.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 /**
  * 
@@ -17,19 +18,28 @@ public class ItemContainer extends Item {
     }
 
     public List<Item> getContainedItems() {
-        return containedItems;
+        return Collections.unmodifiableList(containedItems);
+    }
+
+    public Item getContainedItemByName(String name) {
+        if (name == null) return null;
+        return containedItems.stream()
+                .filter(i -> name.equalsIgnoreCase(i.getName()))
+                .findFirst().orElse(null);
     }
 
     public void addContainedItem(Item item) {
-        if (item != null && !this.containedItems.contains(item)) {
+        if (item == null) return;
+        boolean exists = containedItems.stream()
+                .anyMatch(i -> i.getName() != null && i.getName().equalsIgnoreCase(item.getName()));
+        if (!exists) {
             this.containedItems.add(item);
         }
     }
 
     public void removeContainedItem(Item item) {
-        if (item != null) {
-            this.containedItems.remove(item);
-        }
+        if (item == null) return;
+        containedItems.removeIf(i -> i.getName() != null && i.getName().equalsIgnoreCase(item.getName()));
     }
 
     public boolean isEmpty() {

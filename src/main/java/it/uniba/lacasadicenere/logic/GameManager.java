@@ -81,10 +81,6 @@ public class GameManager {
             }
         }
         
-        if(game.getInventory() != null) {
-            items.addAll(game.getInventory());
-        }
-        
         Set<Item> allItems = new HashSet<>(items);
         addContainedItemsRecursively(allItems, items);
         

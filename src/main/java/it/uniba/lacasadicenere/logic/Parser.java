@@ -22,7 +22,7 @@ import java.util.Arrays;
 public class Parser {
 
     private final Set<Command> availableCommands;
-    GameManager gameManager = new GameManager(); 
+    private final GameManager gameManager;
     private final Set<String> stopWords = new HashSet<>();
     
     /*
@@ -47,8 +47,14 @@ public class Parser {
     public ParserOutput parse(String input) {
         ParserOutput output = new ParserOutput();
         
+        if (input == null || input.trim().isEmpty()) {
+            return output;
+        }
+        
         String[] words = Arrays.stream(input.split(" "))
                 .map(String::toLowerCase)
+                .map(String::trim)
+                .filter(word -> !word.isEmpty())
                 .filter(word -> !stopWords.contains(word))
                 .toArray(String[]::new);
         
@@ -69,15 +75,18 @@ public class Parser {
             return output; 
         }
 
-        if(words.length > 1) {
-            Item found = findObjectByName(words[1]);
-            if(found != null) {
-                output.setItem(found);
-                output.setArgs(2);
-            } else {
-                output.setArgs(1);
+        if (words.length > 1) {
+            // Cerca nelle parole rimanenti
+            for (int i = 1; i < words.length; i++) {
+                Item found = findObjectByName(words[i]);
+                if (found != null) {
+                    output.setItem(found);
+                    output.setArgs(2);
+                    break;
+                }
             }
         }
+        
         return output;
     }
 

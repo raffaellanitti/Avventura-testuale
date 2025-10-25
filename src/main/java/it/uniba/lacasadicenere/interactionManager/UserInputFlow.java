@@ -17,21 +17,21 @@ import it.uniba.lacasadicenere.util.EffettiTesto;
 import java.util.List;
 
 /**
- *
+ * Gestisce il flusso di input dell'utente e gli eventi speciali del gioco.
  */
 public class UserInputFlow {
 
     public static int Event;
 
     private static Parser parser;
-
     private static CommandExecutor commandExecutor;
-    
     private static MirrorGame mirrorGame;
 
+    /**
+     * Punto di ingresso principale per processare l'input dell'utente.
+     * Non visualizza l'input dell'utente - lo gestiscono i metodi specifici.
+     */
     public static void gameFlow(final String text) {
-        OutputDisplayManager.displayText(text);
-
         switch(Event) {
             case 0:
                 parserFlow(text);
@@ -48,34 +48,57 @@ public class UserInputFlow {
         }
     }
 
+    /**
+     * Gestisce il flusso normale del parser per i comandi di gioco.
+     */
     private static void parserFlow(final String text) {
         if(parser == null) {
             OutputDisplayManager.displayText("Errore nell'inizializzazione del parser. Avviare di nuovo il gioco.");
             return;
         }
+        
+        // Visualizza il comando dell'utente
+        OutputDisplayManager.displayText("> " + text);
+        
         ParserOutput parserOutput = parser.parse(text);
 
         if(parserOutput.getArgs() != 0) {
-            commandExecutor.execute(parserOutput);
+            commandExecutor.executeCommand(parserOutput);
         } else {
             OutputDisplayManager.displayText("Comando non riconosciuto. Riprova.");
         }
     }
     
+    /**
+     * Gestisce il mini-gioco degli specchi.
+     */
     private static void mirrorGameFlow(final String text) {
-       if(mirrorGame == null) {
-           OutputDisplayManager.displayText("Errore: gioco non inizializzato.");
-           UserInputFlow.Event = 0;
-           return;
-       }
-       mirrorGame.checkAnswer(text);
+        if(mirrorGame == null) {
+            OutputDisplayManager.displayText("Errore: gioco non inizializzato.");
+            Event = 0;
+            return;
+        }
+        
+        // Visualizza la risposta dell'utente
+        OutputDisplayManager.displayText("> " + text);
+        
+        mirrorGame.checkAnswer(text);
     }
 
-    private static void endingFlow(final String text) throws RuntimeException {
-        String testo = "Mentre poggi la candela, l’amuleto e il diario sull’altare, un bagliore caldo avvolge la cripta. La casa sospira, come liberata da un antico peso. Le ombre svaniscono, i muri anneriti sembrano respirare e una sensazione di pace ti avvolge. Hai riportato la luce, la memoria e la protezione… e La Casa di Cenere finalmente riposa.";
+    /**
+     * Gestisce il finale del gioco quando il giocatore completa tutti gli obiettivi.
+     */
+    private static void endingFlow(final String text) {
+        // NON visualizzare l'input dell'utente qui - è già stato gestito
+        
+        String testo = "Mentre poggi la candela, l'amuleto e il diario sull'altare, un bagliore caldo avvolge la cripta. "
+                + "La casa sospira, come liberata da un antico peso. Le ombre svaniscono, i muri anneriti sembrano respirare "
+                + "e una sensazione di pace ti avvolge. Hai riportato la luce, la memoria e la protezione… "
+                + "e La Casa di Cenere finalmente riposa.";
 
-        OutputDisplayManager.displayText(" " + testo); 
+        OutputDisplayManager.displayText(testo);
 
+        // Pausa di 4 secondi prima di chiudere
         EffettiTesto pausa = new EffettiTesto(4000);
         pausa.start();
     
@@ -89,6 +112,9 @@ public class UserInputFlow {
         OutputDisplayManager.displayText("Grazie per aver giocato a La Casa di Cenere!");
     }
 
+    /**
+     * Configura il flusso di gioco per una nuova partita.
+     */
     public static void setUpGameFlow(final Game game) {
         Event = 0;
        
@@ -102,18 +128,18 @@ public class UserInputFlow {
         }
         
         DatabaseConnection.printFromDB("0", game.getCurrentRoom().getName(), "true", "0");
-
         GameGUI.setImagePanel(game.getCurrentRoom().getName());
     }
         
-
+    /**
+     * Configura il flusso di gioco per una partita caricata.
+     */
     public static void setUpLoadedGameFlow(final Game game) {
         Event = 0;
 
         parser = new Parser();
         commandExecutor = new CommandExecutor(game);
         mirrorGame = MirrorGame.getInstance();
-
         
         List<String> itemsNames = game.getInventory().stream().map(Item::getName).toList();
         String[] itemsNamesArray = itemsNames.toArray(new String[0]);

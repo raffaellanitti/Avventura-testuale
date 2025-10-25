@@ -11,7 +11,6 @@ it/uniba/lacasadicenere/type/ParserOutput.class
 it/uniba/lacasadicenere/util/Converter.class
 it/uniba/lacasadicenere/entity/Item.class
 it/uniba/lacasadicenere/logic/GameLogic.class
-it/uniba/lacasadicenere/gui/GameGUI$4.class
 it/uniba/lacasadicenere/type/CommandType.class
 it/uniba/lacasadicenere/util/ItemDeserializer.class
 it/uniba/lacasadicenere/gui/MenuGUI$2.class
@@ -27,7 +26,6 @@ it/uniba/lacasadicenere/gui/MenuGUI$1.class
 it/uniba/lacasadicenere/util/EffettiTesto.class
 it/uniba/lacasadicenere/util/EffettiTesto$TipoEffetto.class
 it/uniba/lacasadicenere/entity/Game.class
-it/uniba/lacasadicenere/gui/GameGUI$3.class
 it/uniba/lacasadicenere/interactionManager/UserInputFlow.class
 it/uniba/lacasadicenere/interactionManager/MirrorGame.class
 it/uniba/lacasadicenere/gui/MenuGUI$5.class
