@@ -5,26 +5,25 @@
 package it.uniba.lacasadicenere.type;
 
 /**
- * 
+ * Chiave per la HashMap dei comandi nel CommandExecutor.
+ * Combina il tipo di comando con il numero di argomenti.
  */
 public class CommandExecutorKey {
     
     private CommandType command;
-    
     private int args;
     
     public CommandExecutorKey(CommandType c, int a) {
         this.command = c;
-        this.args =  a;
+        this.args = a;
     }
     
     @Override
     public boolean equals(Object o) {
-        if(this == o) return true;
-        if(!(o instanceof CommandExecutorKey)) return false;
+        if (this == o) return true;
+        if (!(o instanceof CommandExecutorKey)) return false;
         CommandExecutorKey that = (CommandExecutorKey) o;
-        return command == that.command &&
-                args == that.args;
+        return command == that.command && args == that.args;
     }
 
     @Override

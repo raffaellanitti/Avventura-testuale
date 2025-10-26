@@ -4,13 +4,15 @@
  */
 package it.uniba.lacasadicenere.gui;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
-import javax.swing.ImageIcon;
+import java.io.File;
+import java.io.IOException;
 import java.awt.Dimension;
 import java.awt.CardLayout;
 import java.awt.Image;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 /**
  * Gestore principale della GUI con correzioni per il caricamento delle risorse
@@ -24,24 +26,11 @@ public class ManagerGUI extends JFrame {
         setPreferredSize(new Dimension(800, 600));
         setResizable(false);
         
-        // Carica l'icona dal classpath
         try {
-            java.net.URL iconURL = getClass().getResource("/img/icona.png");
-            if (iconURL != null) {
-                Image icona = new ImageIcon(iconURL).getImage();
-                setIconImage(icona);
-            } else {
-                System.err.println("ATTENZIONE: Icona non trovata nel classpath (/img/icona.png)");
-                // Prova con percorso alternativo per compatibilità
-                try {
-                    Image icona = new ImageIcon("src/main/resources/img/icona.png").getImage();
-                    setIconImage(icona);
-                } catch (Exception e2) {
-                    System.err.println("Impossibile caricare l'icona anche con percorso alternativo. Avvio senza icona.");
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("ERRORE durante il caricamento dell'icona: " + e.getMessage());
+            Image icona = ImageIO.read(new File("src/main/resources/img/icona.png"));
+            setIconImage(icona);
+        } catch(IOException e) {
+            e.printStackTrace();
         }
         
         JPanel cards = new JPanel(new CardLayout());

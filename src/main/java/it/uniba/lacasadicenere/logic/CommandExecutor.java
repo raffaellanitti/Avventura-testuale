@@ -27,6 +27,7 @@ import java.util.HashMap;
  * Esegue i comandi del gioco in base all'input parsato dall'utente.
  */
 public class CommandExecutor {
+    
     private Game game;
     private final HashMap<CommandExecutorKey, CommandBehavior> commandMap;
     private GameLogic gameLogic;
@@ -37,16 +38,17 @@ public class CommandExecutor {
     private CommandBehavior createDirectionCommandBehavior(CommandType direction) {
         return p -> {
             Corridor corridor = game.getCorridorMap().stream()
-                    .filter(c -> c.getStartingRoom().getName().equals(game.getCurrentRoom().getName()) && c.getDirection() == direction)
+                    .filter(c -> c.getStartingRoom().getName().equals(game.getCurrentRoom().getName()) 
+                              && c.getDirection() == direction)
                     .findFirst()
                     .orElse(null);
             
-            if (corridor != null && !corridor.isLocked()) {
+            if(corridor != null && !corridor.isLocked()) {
                 game.setCurrentRoom(corridor.getArrivingRoom());
             } else if (corridor != null && corridor.isLocked()) {
-                OutputDisplayManager.displayText("Il corridoio verso " + direction + " è bloccato.");
+                OutputDisplayManager.displayText("Il corridoio verso " + direction + " è bloccato!");
             } else {
-                OutputDisplayManager.displayText("Non c'è un corridoio verso " + direction + ".");
+                OutputDisplayManager.displayText("Non c'è un passaggio verso " + direction + "!");
             }
         };  
     }
@@ -56,37 +58,50 @@ public class CommandExecutor {
         this.gameLogic = new GameLogic(game);
         commandMap = new HashMap<>();
 
-        // Direzioni
-        commandMap.put(new CommandExecutorKey(CommandType.NORD, 1),
+        commandMap.put(new CommandExecutorKey(CommandType.NORD, 0),
                 createDirectionCommandBehavior(CommandType.NORD));
-        commandMap.put(new CommandExecutorKey(CommandType.SUD, 1),
+        commandMap.put(new CommandExecutorKey(CommandType.SUD, 0),
                 createDirectionCommandBehavior(CommandType.SUD));
-        commandMap.put(new CommandExecutorKey(CommandType.EST, 1),
+        commandMap.put(new CommandExecutorKey(CommandType.EST, 0),
                 createDirectionCommandBehavior(CommandType.EST));
-        commandMap.put(new CommandExecutorKey(CommandType.OVEST, 1),
+        commandMap.put(new CommandExecutorKey(CommandType.OVEST, 0),
                 createDirectionCommandBehavior(CommandType.OVEST));
         
-        // Osserva stanza
         commandMap.put(new CommandExecutorKey(CommandType.OSSERVA, 0),
                 p -> game.getCurrentRoom().printDescription());
 
-        // Inventario
         commandMap.put(new CommandExecutorKey(CommandType.INVENTARIO, 0),
                 p -> game.printInventory());
         
-        // Prendi oggetto
+        commandMap.put(new CommandExecutorKey(CommandType.OSSERVA, 1),
+                p -> {
+                    Item item = p.getItem();
+                    
+                    if (item == null) {
+                        OutputDisplayManager.displayText("Oggetto non specificato.");
+                        return;
+                    }
+                    if(game.getCurrentRoom().getItems().contains(item)) {
+                        DatabaseConnection.printFromDB("Osserva", game.getCurrentRoom().getName(), String.valueOf(game.getCurrentRoom()), item.getName());
+                    } else if(game.getInventory().contains(item)) {
+                        OutputDisplayManager.displayText("La tua borsa non è trasparente!");
+                    } else {
+                        OutputDisplayManager.displayText(item.getName() + " non è nella stanza!");
+                    }
+                });
+        
         commandMap.put(new CommandExecutorKey(CommandType.PRENDI, 1),
                 p -> {
                     Item item = p.getItem();
 
                     if (item == null) {
-                        OutputDisplayManager.displayText("Oggetto non specificato.");
+                        OutputDisplayManager.displayText("Devi specificare un oggetto da prendere.");
                         return;
                     }
                     
                     if (game.getInventory().contains(item)) {
                         OutputDisplayManager.displayText("Hai già " + item.getName() + " nell'inventario.");
-                    } else if(game.getCurrentRoom().getItems().contains(p.getItem())) {
+                    } else if (game.getCurrentRoom().getItems().contains(item)) {
                         if (item.isPickable()) {
                             game.addInventory(item);
                             game.getCurrentRoom().removeItem(item.getName());
@@ -98,92 +113,57 @@ public class CommandExecutor {
                         OutputDisplayManager.displayText(item.getName() + " non è presente nella stanza.");
                     }
                 });
-                
-        // Osserva oggetto
-        commandMap.put(new CommandExecutorKey(CommandType.OSSERVA, 1),
-                p -> {
-                    if(game.getCurrentRoom().getItems().contains(p.getItem())) {
-                        DatabaseConnection.printFromDB("Osserva", game.getCurrentRoom().getName(), String.valueOf(game.getCurrentRoom()), p.getItem().getName());
-                    } else if(game.getInventory().contains(p.getItem())) {
-                        OutputDisplayManager.displayText("La tua borsa non è trasparente!");
-                    } else {
-                        OutputDisplayManager.displayText(p.getItem().getName() + " non è presente nella stanza.");
-                    }
-                });
 
-        // Usa oggetto
         commandMap.put(new CommandExecutorKey(CommandType.USA, 1),
                 p -> {
-                    if(game.getInventory().contains(p.getItem())) {
-                        boolean used = gameLogic.executeUseSingeItem(p.getItem());
-                        if(!used) {
-                            OutputDisplayManager.displayText("Non succede nulla usando " + p.getItem().getName() + ".");
-                            return;
-                        }
-                    } else {
-                        OutputDisplayManager.displayText("Non puoi usare qualcosa che non possiedi.");
-                    }
-                });
-
-        // Lascia oggetto
-        commandMap.put(new CommandExecutorKey(CommandType.LASCIA, 1),
-                p -> {
                     Item item = p.getItem();
-                    if (item == null) {
-                        OutputDisplayManager.displayText("Oggetto non specificato.");
-                        return;
-                    }
                     
-                    if (!game.getInventory().contains(item)) {
-                        OutputDisplayManager.displayText("Non possiedi " + item.getName() + ".");
-                        return;
+                    if(game.getInventory().contains(item)) {
+                        boolean used = gameLogic.executeUseSingeItem(item);
+                        if(!used) {
+                            OutputDisplayManager.displayText("Non succede nulla usando " + item.getName() + ".");
+                            return;
+                        } 
+                        DatabaseConnection.printFromDB("Usa", game.getCurrentRoom().getName(), String.valueOf(game.getCurrentRoom()), item.getName());
+                    } else {
+                        OutputDisplayManager.displayText("Non puoi usare qualcosa che non possiedi!");
                     }
-
-                    if (game.getCurrentRoom() != null && game.getCurrentRoom().getName().equals("Stanza5")) {
-                        boolean isEndingItem = item.hasName("Candela") || 
-                                              item.hasName("Amuleto") || 
-                                              item.hasName("Diario");
-                        
-                        if (isEndingItem) {
-                            // Controlla se il giocatore ha tutti e tre gli oggetti
-                            boolean hasCandela = game.getInventory().stream()
-                                    .anyMatch(i -> i.hasName("Candela"));
-                            boolean hasAmuleto = game.getInventory().stream()
-                                    .anyMatch(i -> i.hasName("Amuleto"));
-                            boolean hasDiario = game.getInventory().stream()
-                                    .anyMatch(i -> i.hasName("Diario"));
-                            
-                            if (hasCandela && hasAmuleto && hasDiario) {
-                                OutputDisplayManager.displayText("Posi " + item.getName() + " sull'altare...");
-                                
-                                // Attiva il finale
-                                UserInputFlow.Event = 2;
-                                return;
-                            } else {
-                                OutputDisplayManager.displayText("Posi " + item.getName() + " sull'altare, ma non succede nulla. Forse mancano altri oggetti...");
-                                return;
-                            }
-                        }
-                    }
-                    game.removeInventory(item);
-                    if (game.getCurrentRoom() != null) {
-                        game.getCurrentRoom().addItems(item);
-                    }
-                    OutputDisplayManager.displayText("Hai lasciato " + item.getName() + " nella stanza.");
                 });
-    }
+        
+        commandMap.put(new CommandExecutorKey(CommandType.LASCIA, 1), p -> {
+            Item item = p.getItem();
 
+            if (item == null) {
+                OutputDisplayManager.displayText("Devi specificare un oggetto da lasciare.");
+                return;
+            }
+
+            if (!game.getInventory().contains(item)) {
+                OutputDisplayManager.displayText("Non possiedi " + item.getName() + ".");
+                return;
+            }
+
+            game.removeInventory(item);
+            game.getCurrentRoom().addItems(item);
+            OutputDisplayManager.displayText("Hai lasciato " + item.getName() + " nella stanza.");
+        });
+
+    }
     /**
      * Esegue il comando appropriato in base all'output del parser.
      * 
      * @param p L'output del parser contenente comando e oggetto
      */
-    // ...existing code...
-    public void executeCommand(ParserOutput p) {
+    public void execute(ParserOutput p) {
+        if (p == null || p.getCommand() == null) {
+            OutputDisplayManager.displayText("Non ho capito il comando.");
+            return;
+        }
         int args = p.getArgs();
+        
         CommandExecutorKey key = new CommandExecutorKey(p.getCommand(), args);
         CommandBehavior behavior = commandMap.get(key);
-
+        
         if(behavior != null) {
             behavior.execute(p);
         } else {

@@ -57,13 +57,10 @@ public class UserInputFlow {
             return;
         }
         
-        // Visualizza il comando dell'utente
-        OutputDisplayManager.displayText("> " + text);
-        
         ParserOutput parserOutput = parser.parse(text);
 
         if(parserOutput.getArgs() != 0) {
-            commandExecutor.executeCommand(parserOutput);
+            commandExecutor.execute(parserOutput);
         } else {
             OutputDisplayManager.displayText("Comando non riconosciuto. Riprova.");
         }
@@ -77,11 +74,7 @@ public class UserInputFlow {
             OutputDisplayManager.displayText("Errore: gioco non inizializzato.");
             Event = 0;
             return;
-        }
-        
-        // Visualizza la risposta dell'utente
-        OutputDisplayManager.displayText("> " + text);
-        
+        }        
         mirrorGame.checkAnswer(text);
     }
 
@@ -89,7 +82,6 @@ public class UserInputFlow {
      * Gestisce il finale del gioco quando il giocatore completa tutti gli obiettivi.
      */
     private static void endingFlow(final String text) {
-        // NON visualizzare l'input dell'utente qui - è già stato gestito
         
         String testo = "Mentre poggi la candela, l'amuleto e il diario sull'altare, un bagliore caldo avvolge la cripta. "
                 + "La casa sospira, come liberata da un antico peso. Le ombre svaniscono, i muri anneriti sembrano respirare "
@@ -98,7 +90,6 @@ public class UserInputFlow {
 
         OutputDisplayManager.displayText(testo);
 
-        // Pausa di 4 secondi prima di chiudere
         EffettiTesto pausa = new EffettiTesto(4000);
         pausa.start();
     
@@ -136,21 +127,22 @@ public class UserInputFlow {
      */
     public static void setUpLoadedGameFlow(final Game game) {
         Event = 0;
-
+        
+        mirrorGame = MirrorGame.getInstance();
         parser = new Parser();
         commandExecutor = new CommandExecutor(game);
-        mirrorGame = MirrorGame.getInstance();
-        
         List<String> itemsNames = game.getInventory().stream().map(Item::getName).toList();
         String[] itemsNamesArray = itemsNames.toArray(new String[0]);
         GameGUI.updateInventoryTextArea(itemsNamesArray);
-        
-        if(game.getCurrentRoom().getName().equals("Stanza1")) {
+        if (game.getCurrentRoom().getName().equals("Stanza1")) {
             DatabaseConnection.printFromDB("0", game.getCurrentRoom().getName(), String.valueOf(game.getCurrentRoom()), "0");
-        } else {
-            DatabaseConnection.printFromDB("Osserva", game.getCurrentRoom().getName(), String.valueOf(game.getCurrentRoom()), "0");           
+
         }
-        
-        GameGUI.setImagePanel(game.getCurrentRoom().getName());
+        else
+        {
+            DatabaseConnection.printFromDB("Osserva", game.getCurrentRoom().getName(), String.valueOf(game.getCurrentRoom()), "0");
+
+        }
     }
 }
+
