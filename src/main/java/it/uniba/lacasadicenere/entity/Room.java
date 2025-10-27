@@ -97,6 +97,6 @@ public class Room {
     
     public void printDescription() {
         Game game = Game.getInstance();
-        DatabaseConnection.printFromDB("Osserva", name, String.valueOf(game.getCurrentRoom()), "0");
+        DatabaseConnection.printFromDB("Osserva", name, "true", "0", "0");
     }
 }

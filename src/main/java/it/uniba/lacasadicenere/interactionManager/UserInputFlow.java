@@ -56,10 +56,9 @@ public class UserInputFlow {
             OutputDisplayManager.displayText("Errore nell'inizializzazione del parser. Avviare di nuovo il gioco.");
             return;
         }
-        
         ParserOutput parserOutput = parser.parse(text);
 
-        if(parserOutput.getArgs() != 0) {
+        if(parserOutput.getCommand() != null) {
             commandExecutor.execute(parserOutput);
         } else {
             OutputDisplayManager.displayText("Comando non riconosciuto. Riprova.");
@@ -108,18 +107,15 @@ public class UserInputFlow {
      */
     public static void setUpGameFlow(final Game game) {
         Event = 0;
-       
-        parser = new Parser();
-        commandExecutor = new CommandExecutor(game);
-        mirrorGame = MirrorGame.getInstance();
-        
         if(game.getCurrentRoom() == null) {
             OutputDisplayManager.displayText("Errore nell'inizializzazione della stanza corrente. Avviare di nuovo il gioco.");
             return;
         }
-        
-        DatabaseConnection.printFromDB("0", game.getCurrentRoom().getName(), "true", "0");
-        GameGUI.setImagePanel(game.getCurrentRoom().getName());
+        DatabaseConnection.printFromDB("0", game.getCurrentRoom().getName(), "true", "0", "0");
+
+        mirrorGame = MirrorGame.getInstance();
+        parser = new Parser();
+        commandExecutor = new CommandExecutor(game);
     }
         
     /**
@@ -135,13 +131,11 @@ public class UserInputFlow {
         String[] itemsNamesArray = itemsNames.toArray(new String[0]);
         GameGUI.updateInventoryTextArea(itemsNamesArray);
         if (game.getCurrentRoom().getName().equals("Stanza1")) {
-            DatabaseConnection.printFromDB("0", game.getCurrentRoom().getName(), String.valueOf(game.getCurrentRoom()), "0");
-
+            DatabaseConnection.printFromDB("0", game.getCurrentRoom().getName(), "true", "0", "0");
         }
         else
         {
-            DatabaseConnection.printFromDB("Osserva", game.getCurrentRoom().getName(), String.valueOf(game.getCurrentRoom()), "0");
-
+            DatabaseConnection.printFromDB("Osserva", game.getCurrentRoom().getName(), "true", "0", "0");
         }
     }
 }

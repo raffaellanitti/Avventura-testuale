@@ -84,7 +84,7 @@ public class GameManager {
         Set<Item> allItems = new HashSet<>(items);
         addContainedItemsRecursively(allItems, items);
         
-        return items;
+        return allItems;
     }
     
     /**

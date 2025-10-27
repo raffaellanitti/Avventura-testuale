@@ -103,16 +103,15 @@ public class Item {
     }
 
     @Override 
-    public boolean equals(Object o) {
-        if(this == o) return true;
-        if(!(o instanceof Item)) return false;
-        Item item = (Item) o;
+    public boolean equals(Object o) { 
+        if(this == o) return true; 
+        if(!(o instanceof Item)) return false; 
+        Item item = (Item) o; 
         return Objects.equals(name, item.name) && 
-                Objects.equals(aliases, item.aliases);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, aliases);
+                Objects.equals(aliases, item.aliases); 
+    } 
+    @Override 
+    public int hashCode() { 
+        return Objects.hash(name, aliases); 
     }
 }

@@ -9,7 +9,6 @@ import it.uniba.lacasadicenere.entity.Item;
 import it.uniba.lacasadicenere.entity.ItemContainer;
 
 import java.lang.reflect.Type;
-
 /**
  *
  * @author raffaellanitti

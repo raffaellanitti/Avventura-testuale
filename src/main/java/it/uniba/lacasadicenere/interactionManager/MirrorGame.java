@@ -29,7 +29,7 @@ public class MirrorGame {
         Game game = Game.getInstance();
         GameGUI.setImagePanel(game.getCurrentRoom().getName());
         
-        DatabaseConnection.printFromDB("Osserva", game.getCurrentRoom().getName(), "true", "0");
+        DatabaseConnection.printFromDB("Osserva", game.getCurrentRoom().getName(), "true", "0", "0");
         
         OutputDisplayManager.displayText(QUESTION);
         OutputDisplayManager.displayText("Scrivi il numero di specchi che vedi:");
@@ -49,7 +49,7 @@ public class MirrorGame {
         if (isCorrectAnswer(cleanedAnswer)) {
 
             solved = true;
-            DatabaseConnection.printFromDB("0", "Stanza4", "Corretto", "0");
+            DatabaseConnection.printFromDB("0", "Stanza4", "Corretto", "0", "0");
             
             game.unlockCorridor("Stanza4", "Stanza5");
             
@@ -58,7 +58,7 @@ public class MirrorGame {
             UserInputFlow.Event = 0;
 
         } else {
-            DatabaseConnection.printFromDB("0", "Stanza4", "Sbagliato", "0");
+            DatabaseConnection.printFromDB("0", "Stanza4", "Sbagliato", "0", "0");
 
             OutputDisplayManager.displayText("Risposta errata. Osserva meglio gli specchi e riprova.");
         }

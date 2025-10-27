@@ -7,6 +7,7 @@ package it.uniba.lacasadicenere.logic;
 import it.uniba.lacasadicenere.entity.Game;
 import it.uniba.lacasadicenere.entity.Item;
 import it.uniba.lacasadicenere.entity.ItemContainer;
+import it.uniba.lacasadicenere.database.DatabaseConnection;
 
 
 /**
@@ -32,7 +33,7 @@ public class GameLogic {
      * @param i
      * @return 
      */
-    public boolean executeUseSingeItem(Item i) {
+    public boolean executeUseSingleItem(Item i) {
         if((i.hasName("Candela") || i.hasName("Foglio")) &&
                 game.getCurrentRoom().getName().equals("Stanza1")) {
             
@@ -44,6 +45,24 @@ public class GameLogic {
                 game.getCurrentRoom().getName().equals("Stanza3")) {
             
             game.unlockCorridor("Stanza3", "Stanza4");
+            return true;
+        }
+        return false;
+    }
+
+    public boolean executeUseDoubleItem(Item item1, Item item2) {
+        if(item1.hasName("Fiammiferi") && item2.hasName("Candela") && game.getCurrentRoom().getName().equals("Stanza1")) {
+            game.removeInventory(item1);
+             DatabaseConnection.printFromDB("Usa", game.getCurrentRoom().getName(), 
+            "true", "Fiammiferi", "Candela");
+             game.unlockCorridor("Stanza1", "Stanza2");
+            return true;
+        }
+
+        if(item1.hasName("Chiave") && item2.hasName("Scrigno") && game.getCurrentRoom().getName().equals("Stanza2")) {
+            game.removeInventory(item1);
+            DatabaseConnection.printFromDB("Usa", game.getCurrentRoom().getName(), 
+            "true", "Chiave", "Scrigno");
             return true;
         }
         return false;

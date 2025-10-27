@@ -40,12 +40,12 @@ public class Inizializer {
             items.add(telefono);
             
             Item fiammiferi = new Item("Fiammiferi", "Una scatola di fiammiferi secchi.", true, 
-                    Arrays.asList("Fiammifer", "ScatolaFiammiferi", "Accendino"));
+                    Arrays.asList("Fiammifero", "ScatolaFiammiferi", "Accendino"));
             items.add(fiammiferi);
             
             // Oggetti Stanza 1
             Item tavolo = new Item("Tavolo", "Un tavolino su cui giacciono una candela e un foglio piegato.", 
-                    false, Arrays.asList("Tavolino", "Banco", "Tavola", "Scrivania"));
+                    false, Arrays.asList("Tavolino", "Banco", "Tavolino", "Scrivania"));
             items.add(tavolo);
             
             Item candela = new Item("Candela", "Una candela spenta, consumata dal tempo.", true, 
@@ -190,8 +190,10 @@ public class Inizializer {
             
             // Inventario iniziale
             List<Item> inventario = new ArrayList<>();
-            inventario.add(telefono);
-            inventario.add(fiammiferi);
+            inventario.add(new Item("Telefono", "Il tuo cellulare, pronto per essere usato.", true,
+                    Arrays.asList("Telefonino", "Cellulare", "Phone")));
+            inventario.add(new Item("Fiammiferi", "Una scatola di fiammiferi secchi.", true, 
+                    Arrays.asList("Fiammifero", "ScatolaFiammiferi", "Accendino")));
             game.getInventory().addAll(inventario);
             
             Gson gson = new GsonBuilder()
@@ -206,7 +208,7 @@ public class Inizializer {
             writeJsonToFile("src/main/resources/json/Items.json", itemsJson);
             
         } catch (Exception e) {
-            System.err.println("\n❌ ERRORE durante l'inizializzazione:");
+            System.err.println("\n ERRORE durante l'inizializzazione:");
             e.printStackTrace();
         }
     }
@@ -221,7 +223,7 @@ public class Inizializer {
 
             try (FileWriter writer = new FileWriter(filePath)) {
                 writer.write(jsonContent);
-                System.out.println("  ✓ " + filePath);
+                System.out.println("ok" + filePath);
             }
         } catch (IOException e) {
             System.err.println("Errore durante la scrittura di: " + filePath);
