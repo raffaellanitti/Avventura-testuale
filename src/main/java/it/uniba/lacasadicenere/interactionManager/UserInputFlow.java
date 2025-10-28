@@ -89,17 +89,18 @@ public class UserInputFlow {
 
         OutputDisplayManager.displayText(testo);
 
-        EffettiTesto pausa = new EffettiTesto(4000);
+        EffettiTesto pausa = new EffettiTesto(10000);
         pausa.start();
-    
-        try {
-            pausa.join();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    
-        ManagerGUI.closeGame();
-        OutputDisplayManager.displayText("Grazie per aver giocato a La Casa di Cenere!");
+
+        new Thread(() -> {
+            try {
+                pausa.join();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            ManagerGUI.closeGame();
+            OutputDisplayManager.displayText("Grazie per aver giocato a La Casa di Cenere!");
+        }).start();
     }
 
     /**

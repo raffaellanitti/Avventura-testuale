@@ -88,17 +88,17 @@ public class GameManager {
     }
     
     /**
-     * 
+     * Metodo ricorsivo per aggiungere gli oggetti contenuti.
      * @param allItems
-     * @param currentItems 
+     * @param currentItems
      */
-    private void addContainedItemsRecursively(Set<Item> allItems, Set<Item> currentItems) {
+     private void addContainedItemsRecursively(Set<Item> allItems, Set<Item> currentItems) {
         Set<Item> newlyFoundItems = new HashSet<>();
         
         for(Item item : currentItems) {
             if(item instanceof ItemContainer) {
                 ItemContainer container = (ItemContainer) item;
-                List<Item> containedList = container.getContainedItems();
+                List<Item> containedList = container.getList(); 
                 
                 if(containedList != null) {
                     for(Item contained : containedList) {

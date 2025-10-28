@@ -39,10 +39,16 @@ public class MenuGUI extends JPanel {
     
     GameManager gameManager = new GameManager();
     
+    /**
+     * Costruttore del menu principale
+     */
     public MenuGUI() {
         initComponents();
     }
     
+    /**
+     * Inizializza i componenti grafici del menu principale
+     */
     private void initComponents() {
         
         // DEFINIZIONE COLORI 
@@ -53,41 +59,15 @@ public class MenuGUI extends JPanel {
         
         // Background panel con immagine caricata dal classpath
         backgroundPanel = new JPanel() {
-            private Image backgroundImage = null;
-
-            { // Blocco di inizializzazione per caricare l'immagine
-                try {
-                    // Carica dal classpath (da src/main/resources/img/)
-                    java.net.URL imageURL = getClass().getResource("/img/sfondo.png");
-                    if (imageURL != null) {
-                        backgroundImage = new ImageIcon(imageURL).getImage();
-                    } else {
-                        System.err.println("ATTENZIONE: Immagine sfondo.png non trovata nel classpath");
-                        // Prova con percorso alternativo per compatibilità
-                        try {
-                            backgroundImage = new ImageIcon("src/main/resources/img/sfondo.png").getImage();
-                        } catch (Exception e2) {
-                            System.err.println("Impossibile caricare sfondo.png anche con percorso alternativo");
-                        }
-                    }
-                } catch (Exception e) {
-                    System.err.println("Errore durante il caricamento dell'immagine di sfondo: " + e.getMessage());
-                }
-            }
-
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                if (backgroundImage != null) {
-                    // Disegna l'immagine scalata alle dimensioni del pannello
-                    g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-                } else {
-                    // Sfondo di fallback se l'immagine non è caricata
-                    g.setColor(FOG_BACKGROUND);
-                    g.fillRect(0, 0, getWidth(), getHeight());
-                }
+                ImageIcon img = new ImageIcon("src/main/resources/img/sfondo.png");
+                Image image = img.getImage();
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
             }
         };
+            
         
         newGame = new JButton();
         newGame.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -242,6 +222,10 @@ public class MenuGUI extends JPanel {
         );
     }
     
+    /**
+     * Azione eseguita al click del bottone "Nuova Partita"
+     * @param evt
+     */
     private void newGameActionPerformed(ActionEvent evt) {
         gameManager.createGame();
         Game game = Game.getInstance();
@@ -262,6 +246,10 @@ public class MenuGUI extends JPanel {
         timer.start();
     }
     
+    /**
+     * Azione eseguita al click del bottone "?"
+     * @param evt
+     */
     private void helpActionPerformed(ActionEvent evt) {
         try {
             HelpGUI helpGUI = HelpGUI.getInstance();
@@ -272,6 +260,12 @@ public class MenuGUI extends JPanel {
         }
     }
     
+    /**
+     * Azione eseguita al click del bottone "Carica Partita"
+     * @param evt
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void loadGameActionPerformed(ActionEvent evt) throws IOException, ClassNotFoundException {
         gameManager.resetItems();
         boolean loadedGameSuccessfully = gameManager.loadGame();
@@ -287,6 +281,10 @@ public class MenuGUI extends JPanel {
         }
     }
     
+    /**
+     * Azione eseguita al click del bottone "Riconoscimenti"
+     * @param evt
+     */
     private void creditsActionPerformed(ActionEvent evt) {
         CardLayout cl = (CardLayout) getParent().getLayout();
         cl.show(getParent(), "CreditsGUI");

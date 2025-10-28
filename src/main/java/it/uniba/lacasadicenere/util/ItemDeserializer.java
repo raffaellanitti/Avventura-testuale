@@ -9,20 +9,58 @@ import it.uniba.lacasadicenere.entity.Item;
 import it.uniba.lacasadicenere.entity.ItemContainer;
 
 import java.lang.reflect.Type;
-/**
- *
- * @author raffaellanitti
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class ItemDeserializer implements JsonDeserializer<Item> {
+
     @Override
-    public Item deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        JsonObject jsonObject = json.getAsJsonObject();
-        Gson defaultGson = new Gson();
+    public Item deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) 
+            throws JsonParseException {
         
-        if (jsonObject.has("containedItems") && jsonObject.get("containedItems").isJsonArray()) {
-            return defaultGson.fromJson(jsonObject, ItemContainer.class);
-        } else {
-            return defaultGson.fromJson(jsonObject, Item.class);
+        JsonObject obj = json.getAsJsonObject();
+        
+        // Se ha il campo "list", è un ItemContainer
+        if (obj.has("list")) {
+            String name = obj.get("name").getAsString();
+            String description = obj.get("description").getAsString();
+            boolean pickable = obj.get("isPickable").getAsBoolean();
+            
+            List<String> aliases = new ArrayList<>();
+            if (obj.has("aliases")) {
+                JsonArray aliasArray = obj.getAsJsonArray("aliases");
+                for (JsonElement e : aliasArray) {
+                    aliases.add(e.getAsString());
+                }
+            }
+            
+            ItemContainer container = new ItemContainer(name, description, pickable, aliases);
+            
+            // Deserializza ricorsivamente gli item contenuti
+            if (obj.has("list")) {
+                JsonArray listArray = obj.getAsJsonArray("list");
+                for (JsonElement e : listArray) {
+                    Item contained = context.deserialize(e, Item.class);
+                    container.add(contained);
+                }
+            }
+            
+            return container;
         }
+        
+        // Altrimenti è un Item normale
+        String name = obj.get("name").getAsString();
+        String description = obj.get("description").getAsString();
+        boolean pickable = obj.get("isPickable").getAsBoolean();
+        
+        List<String> aliases = new ArrayList<>();
+        if (obj.has("aliases")) {
+            JsonArray aliasArray = obj.getAsJsonArray("aliases");
+            for (JsonElement e : aliasArray) {
+                aliases.add(e.getAsString());
+            }
+        }
+        
+        return new Item(name, description, pickable, aliases);
     }
 }

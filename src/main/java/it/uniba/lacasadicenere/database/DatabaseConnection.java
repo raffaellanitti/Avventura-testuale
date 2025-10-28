@@ -25,7 +25,6 @@ public class DatabaseConnection {
 
     /**
      * URL del database H2.
-     * Nota: Il database viene creato nella directory corrente del progetto.
      */
     private static final String DB_URL = "jdbc:h2:./src/main/resources/database";
 
@@ -97,24 +96,16 @@ public class DatabaseConnection {
     }
 
     /**
-     * 
+     * Stampa la descrizione dal database in base ai parametri forniti.
      * @param comando
      * @param stanza
      * @param stato
      * @param oggetto1
-     * @param oggetto2 
+     * @param oggetto2
      */
     public static void printFromDB(String comando, String stanza, String stato, String oggetto1, String oggetto2) {
         String query = "SELECT DESCRIZIONE FROM DESCRIZIONE WHERE COMANDO = ? AND STANZA = ? AND STATO = ? AND OGGETTO1 = ? AND OGGETTO2 = ?";
-    
-        System.out.println("=== DEBUG DATABASE ===");
-        System.out.println("Query parametri:");
-        System.out.println("  comando='" + comando + "'");
-        System.out.println("  stanza='" + stanza + "'");
-        System.out.println("  stato='" + stato + "'");
-        System.out.println("  oggetto1='" + oggetto1 + "'");
-        System.out.println("  oggetto2='" + oggetto2 + "'");
-    
+
         try (Connection conn = connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, comando.trim());
@@ -126,36 +117,15 @@ public class DatabaseConnection {
             ResultSet rs = stmt.executeQuery();
 
             if(rs.next()) {
-            String desc = rs.getString("DESCRIZIONE");
-            System.out.println("  TROVATO: " + desc.substring(0, Math.min(50, desc.length())) + "...");
-            System.out.println("======================");
-            OutputDisplayManager.displayText(desc);
-        } else {
-            System.out.println("  NESSUN RISULTATO!");
-            System.out.println("======================");
-            
-            String debugQuery = "SELECT ID, COMANDO, STANZA, OGGETTO1, OGGETTO2 FROM DESCRIZIONE";
-            PreparedStatement debugStmt = conn.prepareStatement(debugQuery);
-            ResultSet debugRs = debugStmt.executeQuery();
-            
-            System.out.println("--- CONTENUTO TABELLA DESCRIZIONE ---");
-            int count = 0;
-            while(debugRs.next() && count < 10) {
-                System.out.println("ID=" + debugRs.getInt("ID") + 
-                    ", COMANDO='" + debugRs.getString("COMANDO") + 
-                    "', STANZA='" + debugRs.getString("STANZA") + 
-                    "', OGG1='" + debugRs.getString("OGGETTO1") + 
-                    "', OGG2='" + debugRs.getString("OGGETTO2") + "'");
-                count++;
+                String desc = rs.getString("DESCRIZIONE");
+                OutputDisplayManager.displayText(desc);
+            } else {
+                OutputDisplayManager.displayText("Nessuna descrizione per i parametri forniti.");
             }
-            System.out.println("--------------------------------------");
-            OutputDisplayManager.displayText("Nessuna descrizione per i parametri forniti.");
+            rs.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        rs.close();
-    } catch (SQLException e) {
-        System.err.println("ERRORE SQL: " + e.getMessage());
-        throw new RuntimeException(e);
     }
-}
 }
  

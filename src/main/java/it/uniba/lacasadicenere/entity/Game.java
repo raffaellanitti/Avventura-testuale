@@ -126,7 +126,6 @@ public class Game {
         }
         game.currentRoom = room;
         GameGUI.setImagePanel(game.currentRoom.getName());
-
     }
     
     /**

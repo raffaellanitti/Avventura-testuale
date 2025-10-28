@@ -1,6 +1,7 @@
 package it.uniba.lacasadicenere.gui;
 
 import it.uniba.lacasadicenere.entity.Game;
+import it.uniba.lacasadicenere.interactionManager.OutputDisplayManager;
 import it.uniba.lacasadicenere.interactionManager.UserInputManager;
 import it.uniba.lacasadicenere.logic.GameManager;
 
@@ -65,39 +66,16 @@ public class GameGUI extends JPanel {
         cardLayout.setHgap(0);
         imagePanel.setLayout(cardLayout);
 
-        // Carica le 12 immagini delle stanze dal classpath
-        for(int i = 1; i <= 12; i++) {
+        // Carica le 5 immagini delle stanze dal classpath
+        for(int i = 1; i <= 6; i++) {
             final int roomNumber = i;
+            final String imagePath = "src/main/resources/img/Stanza" + roomNumber + ".png";
             imagePanel.add(new JPanel() {
-                private Image image = null;
-                
-                {
-                    // Blocco di inizializzazione: carica l'immagine dal classpath
-                    try {
-                        String imagePath = "/img/Stanza" + roomNumber + ".png";
-                        java.net.URL imageURL = getClass().getResource(imagePath);
-                        if (imageURL != null) {
-                            image = new ImageIcon(imageURL).getImage();
-                        } else {
-                            System.err.println("ATTENZIONE: Immagine non trovata: " + imagePath);
-                        }
-                    } catch (Exception e) {
-                        System.err.println("Errore caricamento Stanza" + roomNumber + ": " + e.getMessage());
-                    }
-                }
-                
                 @Override
                 protected void paintComponent(Graphics g) {
                     super.paintComponent(g);
-                    if (image != null) {
-                        g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-                    } else {
-                        // Disegna un placeholder se l'immagine non è caricata
-                        g.setColor(new Color(45, 50, 55));
-                        g.fillRect(0, 0, getWidth(), getHeight());
-                        g.setColor(new Color(200, 220, 255));
-                        g.drawString("Stanza " + roomNumber, getWidth()/2 - 30, getHeight()/2);
-                    }
+                    ImageIcon image = new ImageIcon(imagePath);
+                    g.drawImage(image.getImage(), 0, 0, getWidth(), getHeight(), this);
                 }
             }, "Stanza" + roomNumber);
         }
@@ -242,6 +220,15 @@ public class GameGUI extends JPanel {
         );
     }
 
+    /**
+     * Configura un JButton con le proprietà specificate.
+     * @param button
+     * @param text
+     * @param foreground
+     * @param selectColor
+     * @param background
+     * @param fontSize
+     */
     private void setupButton(JButton button, String text, Color foreground, 
                             Color selectColor, Color background, int fontSize) {
         button.setUI(new MetalButtonUI() {
@@ -261,6 +248,12 @@ public class GameGUI extends JPanel {
         button.setContentAreaFilled(true);
     }
 
+    /**
+     * Gestione dell'evento di click sul pulsante "saveGame".
+     * @param evt
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void saveGameButtonActionPerformed(ActionEvent evt) throws IOException, ClassNotFoundException {
         Font font = new Font("Otacon", Font.PLAIN, 13);
         UIManager.put("OptionPane.messageFont", font);
@@ -273,6 +266,11 @@ public class GameGUI extends JPanel {
         }
     }
 
+    /**
+     * Salva lo stato attuale del gioco.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void saveFile() throws IOException, ClassNotFoundException {
         GameManager gameManager = new GameManager();
         Game game = Game.getInstance();
@@ -283,10 +281,17 @@ public class GameGUI extends JPanel {
         goBack();
     }
 
+    /**
+     * Notifica l'utente che la partita non è stata salvata.
+     */
     private void notSavedFile() {
         JOptionPane.showMessageDialog(this, "Partita non salvata", "Salva", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Gestione dell'evento di click sul pulsante "goBack".
+     * @param evt
+     */
     private void goBackButtonActionPerformed(ActionEvent evt) {
         UIManager.put("OptionPane.messageFont", new Font("Otacon", Font.PLAIN, 13));
         int back = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler tornare al Menu senza salvare?", "Indietro", JOptionPane.YES_NO_OPTION);
@@ -296,6 +301,9 @@ public class GameGUI extends JPanel {
         }
     }
 
+    /**
+     * Torna al Menu principale del gioco.  
+     */
     public void goBack() {
         CardLayout cl = (CardLayout) getParent().getLayout();
         cl.show(getParent(), "MenuGUI");
@@ -304,19 +312,32 @@ public class GameGUI extends JPanel {
         userInputField.setText("");
     }
 
+    /**
+     * Gestione dell'evento di click sul pulsante "help".
+     * @param evt
+     */
     private void helpButtonActionPerformed(ActionEvent evt) {
         HelpGUI helpGUI = HelpGUI.getInstance();
         helpGUI.setVisible(true);
     }
 
+    /**
+     * Gestione dell'evento di invio del campo di input utente.
+     * @param evt
+     */
     private void userInputFieldActionPerformed(ActionEvent evt) {
         String text = userInputField.getText().trim();
         if (!text.isEmpty()) {
+            OutputDisplayManager.displayText("> " + text);
             userInputField.setText("");
             UserInputManager.setUserInput(text);
         }
     }
 
+    /**
+     * Imposta il testo del displayTextPane.
+     * @param text
+     */
     public static void displayTextPaneSetText(String text) {
         if (displayTextPane.getText().isEmpty()) {
             displayTextPane.setText(text);
@@ -326,6 +347,10 @@ public class GameGUI extends JPanel {
         displayTextPane.setCaretPosition(displayTextPane.getDocument().getLength());
     }
     
+    /**
+     * Aggiunge del testo al displayTextPane.
+     * @param text
+     */
     public static void displayTextPaneAppendText(String text) {
         SwingUtilities.invokeLater(() -> {
             try {
@@ -338,12 +363,20 @@ public class GameGUI extends JPanel {
         });
     }
 
+    /**
+     * Imposta il pannello immagine corrente.
+     * @param panelName
+     */
     public static void setImagePanel(String panelName) {
         Timer timer = new Timer(600, _e -> cardLayout.show(imagePanel, panelName));
         timer.setRepeats(false);
         timer.start();
     }
 
+    /**
+     * Aggiorna il testo dell'inventario.
+     * @param items
+     */
     public static void updateInventoryTextArea(String[] items) {
         StringBuilder inventory = new StringBuilder(" Inventario:\n");
         
@@ -354,10 +387,17 @@ public class GameGUI extends JPanel {
         inventoryTextArea.setText(inventory.toString());
     }
 
+    /**
+     * Restituisce il componente JTextArea dell'inventario.
+     */
     public static JTextArea getInventoryTextArea() {
         return inventoryTextArea;
     }
 
+    /**
+     * Restituisce i nomi degli oggetti presenti nell'inventario.
+     * @return
+     */
     public static String[] getInventoryItemNames() {
         String text = inventoryTextArea.getText();
         String[] lines = text.split("\n");

@@ -5,9 +5,8 @@
 package it.uniba.lacasadicenere.type;
 
 /**
- *
+ * Interfaccia per il comportamento dei comandi.
  */
 public interface CommandBehavior {
-    
     void execute(ParserOutput parsedText);
 }

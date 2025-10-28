@@ -130,22 +130,29 @@ public class Converter {
             throw new RuntimeException(e);
         }
 
+        // Carica Items.json
         try {
             byte[] fileBytes = Files.readAllBytes(Paths.get(itemsFilePath));
             if(fileBytes.length == 0) {
-                return null;
+                return items; // ritorna items già caricati da Game.json
             }
             try (JsonReader reader = new JsonReader(new FileReader(itemsFilePath))) {
-                Type itemListType = new TypeToken<List<Item>>() {}.getType();
+                Type itemListType = new TypeToken<List<Item>>(){}.getType();
                 List<Item> itemList = gson.fromJson(reader, itemListType);
-                itemList.forEach(item -> items.put(item.getName(), item));
+    
+                if (itemList != null) {
+                    for (Item item : itemList) {
+                        items.put(item.getName(), item);
+                    }
                 }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
-            return items;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        
+        return items;
     }
 
     /**

@@ -28,7 +28,6 @@ import java.nio.file.Paths;
 public class Inizializer {
     
     public static void main(String[] args) {
-        System.out.println("=== Inizializzazione del gioco 'La Casa di Cenere' ===\n");
         
         try {
             List<Item> items = new ArrayList<>();
@@ -70,12 +69,11 @@ public class Inizializer {
             items.add(chiave);
             
             Item amuleto = new Item("Amuleto", "Un amuleto d'argento a forma di goccia.", true, 
-                    Arrays.asList("Ciondolo", "Pendente", "Collana"));
-            items.add(amuleto);
+                    Arrays.asList("Ciondolo", "Pendente", "Collana", "Protezione"));
 
-            Item scrigno = new ItemContainer("Scrigno", "Uno scrigno antico con serratura arrugginita.", 
-                    false, Arrays.asList("Cassetta", "Cofanetto", "Baule", "Cassa"),
-                    Arrays.asList(amuleto));
+            ItemContainer scrigno = new ItemContainer("Scrigno", "Uno scrigno antico con serratura arrugginita.", 
+                    false, Arrays.asList("Cassetta", "Cofanetto", "Baule", "Cassa"));
+            scrigno.add(amuleto);
             items.add(scrigno);
               
             // Oggetti Stanza 3
@@ -84,7 +82,7 @@ public class Inizializer {
             items.add(scaffale);
             
             Item diario = new Item("Diario", "Un diario con simboli e istruzioni per un rituale.", 
-                    true, Arrays.asList("Libro", "Quaderno", "Manoscritto"));
+                    true, Arrays.asList("Libro", "Quaderno", "Manoscritto", "Memoria"));
             items.add(diario);
             
             // Oggetti Stanza 5
@@ -198,8 +196,8 @@ public class Inizializer {
             
             Gson gson = new GsonBuilder()
                     .setPrettyPrinting()
-                    .registerTypeAdapter(Item.class, new ItemDeserializer())
                     .create();
+                    
 
             String gameJson = gson.toJson(game);
             writeJsonToFile("src/main/resources/json/Game.json", gameJson);

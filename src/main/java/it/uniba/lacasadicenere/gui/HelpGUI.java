@@ -13,7 +13,7 @@ import java.awt.Font;
 import java.awt.Dimension;
 
 /**
- *
+ * Finestra di aiuto che mostra i comandi di gioco disponibili.
  */
 public class HelpGUI extends JFrame {
     
@@ -24,6 +24,10 @@ public class HelpGUI extends JFrame {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
     
+    /**
+     * Restituisce l'istanza singleton di HelpGUI.
+     * @return
+     */
     public static HelpGUI getInstance() {
         if(instance == null) {
             instance = new HelpGUI();
@@ -31,6 +35,9 @@ public class HelpGUI extends JFrame {
         return instance;
     }
     
+    /**
+     * Inizializza i componenti grafici della finestra di aiuto.
+     */
     private void initComponents() {
         
         // DEFINIZIONE COLORI 

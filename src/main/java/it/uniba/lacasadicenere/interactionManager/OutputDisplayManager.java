@@ -15,15 +15,27 @@ public class OutputDisplayManager {
 
     private static final int MARGIN = 10; 
 
+    /**
+     * Visualizza il testo formattato nella GUI.
+     * @param text
+     */
     public static void displayText(String text) {
         String formattedText = formatText(text);
         GameGUI.displayTextPaneSetText(formattedText);
+        GameGUI.displayTextPaneAppendText("\n");
     }
     
+    /**
+     * Aggiunge il testo formattato alla GUI senza cancellare il testo esistente.
+     * @param character
+     */
     public static void appendChar(String character) {
         GameGUI.displayTextPaneAppendText(character);
     }
 
+    /**
+     * Aggiunge una nuova linea alla GUI.
+     */
     public static void appendNewLine() {
         GameGUI.displayTextPaneAppendText("\n");
     }

@@ -29,14 +29,13 @@ INSERT INTO DESCRIZIONE(ID, COMANDO, STANZA, STATO, OGGETTO1, OGGETTO2, DESCRIZI
 
 -- Stanza 4: Stanza degli Specchi
 (24, 'Osserva', 'Stanza4', 'true', '0', '0', 'Appena entri, vieni avvolto da un silenzio irreale. Le pareti sono completamente ricoperte di specchi antichi, incrinati in più punti, che riflettono la luce tremolante della candela moltiplicando la tua immagine all''infinito. All''improvviso, senti il telefono vibrare nel taschino.'),
-(25, 'Osserva', '0', 'true', 'Telefono', '0', 'Il tuo cellulare. Lo schermo mostra "Segnale debole". Forse puoi usarlo per qualcosa...'),
-(26, 'Usa', 'Stanza4', 'true', 'Telefono', '0', 'Premi il tasto di sblocco. Lo schermo si accende con un messaggio inquietante: "Guarda bene. Conta ciò che ti circonda. Solo la verità aprirà la via."'),
-(27, '0', 'Stanza4', 'Corretto', '0', '0', 'Gli specchi tremano per un istante, poi si sentono scricchiolii profondi. Un passaggio segreto si apre nella parete nord. Puoi procedere.'),
-(28, '0', 'Stanza4', 'Sbagliato', '0', '0', 'Gli specchi sembrano ridere della tua risposta. Nulla accade. Forse dovresti contare con più attenzione...'),
+(25, 'Usa', 'Stanza4', 'true', 'Telefono', '0', 'Premi il tasto di sblocco. Lo schermo si accende con un messaggio inquietante: "Guarda bene. Conta ciò che ti circonda. Solo la verità aprirà la via."'),
+(26, '0', 'Stanza4', 'Corretto', '0', '0', 'Gli specchi tremano per un istante, poi si sentono scricchiolii profondi. Un passaggio segreto si apre nella parete nord. Puoi procedere.'),
+(27, '0', 'Stanza4', 'Sbagliato', '0', '0', 'Gli specchi sembrano ridere della tua risposta. Nulla accade. Forse dovresti contare con più attenzione...'),
 
 -- Stanza 5: Cripta Finale
-(39, 'Osserva', 'Stanza5', 'true', '0', '0', 'Una fredda penombra avvolge la cripta. Davanti a te si erge un altare di pietra decorato con simboli identici a quelli trovati nelle stanze precedenti. L''aria è densa, come se la casa stessa trattenesse il respiro.'),
-(30, 'Osserva', 'Stanza5', 'true', 'Altare', '0', 'Un altare di pietra antica. Un''iscrizione è incisa profondamente: "Riporta la luce, la memoria e la protezione. Solo allora la casa avrà pace." Tre incavi sembrano attendere gli oggetti.'),
-(31, 'Lascia', 'Stanza5', 'true', 'Candela', '0', 'Posi la Candela nel primo incavo. La fiamma diventa più intensa e brillante.'),
-(32, 'Lascia', 'Stanza5', 'true', 'Amuleto', '0', 'Posi l''Amuleto nel secondo incavo. Emette un bagliore argenteo.'),
-(33, 'Lascia', 'Stanza5', 'true', 'Diario', '0', 'Posi il Diario nel terzo incavo. Le pagine iniziano a brillare con una luce dorata.');
+(28, 'Osserva', 'Stanza5', 'true', '0', '0', 'Una fredda penombra avvolge la cripta. Davanti a te si erge un altare di pietra decorato con simboli identici a quelli trovati nelle stanze precedenti. L''aria è densa, come se la casa stessa trattenesse il respiro.'),
+(29, 'Osserva', 'Stanza5', 'true', 'Altare', '0', 'Un altare di pietra antica. Un''iscrizione è incisa profondamente: "Riporta la luce, la memoria e la protezione. Solo allora la casa avrà pace." Tre incavi sembrano attendere gli oggetti.'),
+(30, 'Lascia', 'Stanza5', 'true', 'Candela', '0', 'Posi la Candela nel primo incavo. La fiamma diventa più intensa e brillante.'),
+(31, 'Lascia', 'Stanza5', 'true', 'Amuleto', '0', 'Posi l''Amuleto nel secondo incavo. Emette un bagliore argenteo.'),
+(32, 'Lascia', 'Stanza5', 'true', 'Diario', '0', 'Posi il Diario nel terzo incavo. Le pagine iniziano a brillare con una luce dorata.');

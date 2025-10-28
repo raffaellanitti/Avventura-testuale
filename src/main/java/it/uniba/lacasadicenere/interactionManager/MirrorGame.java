@@ -4,6 +4,9 @@ import it.uniba.lacasadicenere.entity.Game;
 import it.uniba.lacasadicenere.database.DatabaseConnection;
 import it.uniba.lacasadicenere.gui.GameGUI;
 
+/**
+ * Classe che gestisce il gioco degli specchi.
+ */
 public class MirrorGame {
 
     private static final String[] VALID_TRUE_ANSWERS = {
@@ -16,8 +19,13 @@ public class MirrorGame {
 
     private static final String QUESTION = "Quanti specchi ci sono davanti a te nella stanza?";
 
+    // Costruttore privato per il pattern singleton: impedisce la creazione di istanze esterne.
     private MirrorGame() { }
 
+    /**
+     * Restituisce l'istanza singleton di MirrorGame.
+     * @return
+     */
     public static MirrorGame getInstance() {
         if (instance == null) {
             instance = new MirrorGame();
@@ -25,11 +33,19 @@ public class MirrorGame {
         return instance;
     }
 
+    /**
+     * Inizia il gioco degli specchi.
+     */
     public void startGame() {
         Game game = Game.getInstance();
         GameGUI.setImagePanel(game.getCurrentRoom().getName());
         
-        DatabaseConnection.printFromDB("Osserva", game.getCurrentRoom().getName(), "true", "0", "0");
+        DatabaseConnection.printFromDB("Usa", game.getCurrentRoom().getName(), 
+        "true", "Telefono", "0"); 
+        
+        UserInputManager.getUserInput();
+        
+        //DatabaseConnection.printFromDB("Osserva", game.getCurrentRoom().getName(), "true", "0", "0");
         
         OutputDisplayManager.displayText(QUESTION);
         OutputDisplayManager.displayText("Scrivi il numero di specchi che vedi:");
@@ -37,6 +53,10 @@ public class MirrorGame {
         UserInputFlow.Event = 1;
     }
 
+    /**
+     * Controlla la risposta data dall'utente.
+     * @param answer
+     */
     public void checkAnswer(String answer) {
         if (answer == null || answer.trim().isEmpty()) {
             OutputDisplayManager.displayText("Non hai inserito nulla!");
@@ -64,6 +84,11 @@ public class MirrorGame {
         }
     }
 
+    /**
+     * Controlla se la risposta è corretta.
+     * @param text
+     * @return
+     */
     private boolean isCorrectAnswer(String text) {
         for (String valid : VALID_TRUE_ANSWERS) {
             if (text.equals(valid)) {
@@ -79,10 +104,17 @@ public class MirrorGame {
         }
     }
 
+    /**
+     * Verifica se il gioco è stato risolto.
+     * @return
+     */
     public boolean isSolved() {
         return solved;
     }
     
+    /**
+     * Resetta lo stato del gioco.
+     */
     public static void reset() {
         solved = false;
         instance = null;

@@ -49,6 +49,9 @@ public class Item {
         this.aliases = (aliases != null) ? aliases : new ArrayList<>();
     }
 
+    /**
+     * Costruttore di default dell'oggetto Item.
+     */
     public Item() {
         this("", "", false, new ArrayList<>());
     }

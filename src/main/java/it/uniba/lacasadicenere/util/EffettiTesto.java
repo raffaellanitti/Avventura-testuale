@@ -57,7 +57,6 @@ public class EffettiTesto extends Thread {
      * Implementazione dell'effetto di scrittura carattere per carattere sulla GUI.
      */
     private void effettoScritturaGUI() {
-        // Aggiunge un a capo prima di iniziare (per simulare OutputDisplayManager.displayText)
         OutputDisplayManager.appendNewLine(); 
         
         for (char c : testo.toCharArray()) {
