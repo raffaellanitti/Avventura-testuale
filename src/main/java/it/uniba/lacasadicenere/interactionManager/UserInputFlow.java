@@ -2,6 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package it.uniba.lacasadicenere.interactionManager;
 
 import it.uniba.lacasadicenere.database.DatabaseConnection;
@@ -87,19 +91,21 @@ public class UserInputFlow {
                 + "e una sensazione di pace ti avvolge. Hai riportato la luce, la memoria e la protezione… "
                 + "e La Casa di Cenere finalmente riposa.";
 
-        OutputDisplayManager.displayText(testo);
-
-        EffettiTesto pausa = new EffettiTesto(10000);
-        pausa.start();
+        EffettiTesto scrittura = new EffettiTesto(testo, 50);
+        scrittura.start();
 
         new Thread(() -> {
             try {
+                scrittura.join();
+                
+                EffettiTesto pausa = new EffettiTesto(3000);
+                pausa.start();
                 pausa.join();
+                
+                ManagerGUI.closeGame();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            ManagerGUI.closeGame();
-            OutputDisplayManager.displayText("Grazie per aver giocato a La Casa di Cenere!");
         }).start();
     }
 
@@ -140,4 +146,3 @@ public class UserInputFlow {
         }
     }
 }
-
