@@ -328,7 +328,6 @@ public class GameGUI extends JPanel {
     private void userInputFieldActionPerformed(ActionEvent evt) {
         String text = userInputField.getText().trim();
         if (!text.isEmpty()) {
-            OutputDisplayManager.displayText("> " + text);
             userInputField.setText("");
             UserInputManager.setUserInput(text);
         }

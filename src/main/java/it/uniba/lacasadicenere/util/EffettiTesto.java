@@ -10,6 +10,8 @@ import it.uniba.lacasadicenere.interactionManager.OutputDisplayManager;
  * Classe Thread per gestire effetti di testo sulla GUI (scrittura lenta e pause).
  */
 public class EffettiTesto extends Thread {
+
+    private static boolean isWriting = false;
     
     // Enum per definire il tipo di effetto
     public enum TipoEffetto {
@@ -45,11 +47,33 @@ public class EffettiTesto extends Thread {
         this.durata = durata;
     }
 
+    /**
+     * Verifica se l'effetto di scrittura è in corso.
+     * @return
+     */
+    public static synchronized boolean isWriting() {
+        return isWriting;
+    }
+
     @Override
     public void run() {
-        switch (tipo) {
+        if(tipo == TipoEffetto.SCRITTURA) {
+            synchronized(EffettiTesto.class) {
+                isWriting = true;
+            }
+        }
+
+        try {
+            switch(tipo) {
                 case SCRITTURA -> effettoScritturaGUI();
                 case PAUSA -> effettoPausa();
+            }
+        } finally {
+            if(tipo == TipoEffetto.SCRITTURA) {
+                synchronized(EffettiTesto.class) {
+                    isWriting = false;
+                }
+            }
         }
     }
 

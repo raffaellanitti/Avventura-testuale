@@ -56,6 +56,18 @@ public class UserInputFlow {
      * Gestisce il flusso normale del parser per i comandi di gioco.
      */
     private static void parserFlow(final String text) {
+
+        while (EffettiTesto.isWriting()) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+        
+        OutputDisplayManager.displayTextImmediate("> " + text);
+
         if(parser == null) {
             OutputDisplayManager.displayText("Errore nell'inizializzazione del parser. Avviare di nuovo il gioco.");
             return;
@@ -73,6 +85,18 @@ public class UserInputFlow {
      * Gestisce il mini-gioco degli specchi.
      */
     private static void mirrorGameFlow(final String text) {
+
+        while (EffettiTesto.isWriting()) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+        
+        OutputDisplayManager.displayTextImmediate("> " + text);
+
         if(mirrorGame == null) {
             OutputDisplayManager.displayText("Errore: gioco non inizializzato.");
             Event = 0;
@@ -85,6 +109,20 @@ public class UserInputFlow {
      * Gestisce il finale del gioco quando il giocatore completa tutti gli obiettivi.
      */
     private static void endingFlow(final String text) {
+        // Aspetta che eventuali effetti precedenti finiscano (tipo "Hai lasciato Diario...")
+        while (EffettiTesto.isWriting()) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+        
+        // NON stampare il comando vuoto "> " se text è vuoto
+        if (text != null && !text.trim().isEmpty()) {
+            OutputDisplayManager.displayTextImmediate("> " + text);
+        }
         
         String testo = "Mentre poggi la candela, l'amuleto e il diario sull'altare, un bagliore caldo avvolge la cripta. "
                 + "La casa sospira, come liberata da un antico peso. Le ombre svaniscono, i muri anneriti sembrano respirare "

@@ -116,7 +116,14 @@ public class GameLogic {
             boolean hasAmuleto = game.getCurrentRoom().getItems().stream().anyMatch(i -> i.hasName("Amuleto"));
             boolean hasDiario = game.getCurrentRoom().getItems().stream().anyMatch(i -> i.hasName("Diario"));
 
-            if (hasCandela && hasAmuleto && hasDiario) {
+            if(hasCandela && hasAmuleto && hasDiario) {
+                while(UserInputFlow.Event != 0) {
+                    try {
+                        Thread.sleep(100); 
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
                 UserInputFlow.Event = 2;
                 UserInputFlow.gameFlow("");
             }

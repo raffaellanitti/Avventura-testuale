@@ -3,6 +3,7 @@ package it.uniba.lacasadicenere.interactionManager;
 import it.uniba.lacasadicenere.entity.Game;
 import it.uniba.lacasadicenere.database.DatabaseConnection;
 import it.uniba.lacasadicenere.gui.GameGUI;
+import it.uniba.lacasadicenere.util.EffettiTesto;
 
 /**
  * Classe che gestisce il gioco degli specchi.
@@ -44,12 +45,9 @@ public class MirrorGame {
         "true", "Telefono", "0"); 
         
         UserInputManager.getUserInput();
-        
-        //DatabaseConnection.printFromDB("Osserva", game.getCurrentRoom().getName(), "true", "0", "0");
-        
-        OutputDisplayManager.displayText(QUESTION);
-        OutputDisplayManager.displayText("Scrivi il numero di specchi che vedi:");
-    
+
+        OutputDisplayManager.displayText(QUESTION + "\nScrivi il numero di specchi che vedi:");
+
         UserInputFlow.Event = 1;
     }
 
@@ -73,14 +71,14 @@ public class MirrorGame {
             
             game.unlockCorridor("Stanza4", "Stanza5");
             
-            OutputDisplayManager.displayText("Hai risposto correttamente! Il passaggio a nord è ora aperto.");
+            //OutputDisplayManager.displayText("Hai risposto correttamente! Il passaggio a nord è ora aperto.");
             
             UserInputFlow.Event = 0;
 
         } else {
             DatabaseConnection.printFromDB("0", "Stanza4", "Sbagliato", "0", "0");
 
-            OutputDisplayManager.displayText("Risposta errata. Osserva meglio gli specchi e riprova.");
+            //OutputDisplayManager.displayText("Risposta errata. Osserva meglio gli specchi e riprova.");
         }
     }
 
