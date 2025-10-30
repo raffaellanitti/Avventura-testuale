@@ -35,11 +35,6 @@ public enum CommandType {
     OSSERVA,
     
     /**
-     * Comando per visualizzare l'inventario del giocatore
-     */
-    INVENTARIO,
-    
-    /**
      * Comando per prendere un oggetto
      */
     PRENDI,

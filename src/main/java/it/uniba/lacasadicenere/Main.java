@@ -3,8 +3,8 @@
  */
 package it.uniba.lacasadicenere;
 
-import it.uniba.lacasadicenere.database.DatabaseConnection;
-import it.uniba.lacasadicenere.gui.ManagerGUI;
+import it.uniba.lacasadicenere.database.DatabaseH2;
+import it.uniba.lacasadicenere.ui.MainFrame;
 /**
  * Classe principale dell'applicazione.
  */
@@ -15,10 +15,10 @@ public class Main {
      * @param args
      */
     public static void main(final String[] args) {
-        new ManagerGUI();
+        new MainFrame();
         
         try {
-            DatabaseConnection.connect();
+            DatabaseH2.connect();
         } catch (Exception e) {
             e.printStackTrace();
         }

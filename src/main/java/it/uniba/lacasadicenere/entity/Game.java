@@ -4,8 +4,8 @@
  */
 package it.uniba.lacasadicenere.entity;
 
-import it.uniba.lacasadicenere.gui.GameGUI;
-import it.uniba.lacasadicenere.interactionManager.OutputDisplayManager;
+import it.uniba.lacasadicenere.ui.GamePanel;
+import it.uniba.lacasadicenere.interactionManager.OutputService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class Game {
     /**
      * Lista di tutti i collegamenti tra le stanza
      */
-    private List<Corridor> corridorMap;
+    private List<RoomConnection> corridorMap;
     
     /**
      * Istanza statica e privata della classe Game stessa
@@ -79,7 +79,7 @@ public class Game {
         game.inventory.add(item);
         List<String> itemsNames = game.inventory.stream().map(Item::getName).toList();
         String[] itemsNamesArray = itemsNames.toArray(new String[0]);
-        GameGUI.updateInventoryTextArea(itemsNamesArray);
+        GamePanel.updateInventoryTextArea(itemsNamesArray);
     }
 
     /** 
@@ -90,16 +90,16 @@ public class Game {
         game.inventory.remove(item);
         List<String> itemsNames = game.inventory.stream().map(Item::getName).toList();
         String[] itemsNamesArray = itemsNames.toArray(new String[0]);
-        GameGUI.updateInventoryTextArea(itemsNamesArray);
+        GamePanel.updateInventoryTextArea(itemsNamesArray);
     }
 
     /**
      * Stampa la lista degli oggetti presenti nell'inventario
      */
     public void printInventory() {
-        OutputDisplayManager.displayText("Inventario: ");
+        OutputService.displayText("Inventario: ");
         for (Item item : game.inventory) {
-            OutputDisplayManager.displayText("- " + item.getName());
+            OutputService.displayText("- " + item.getName());
         }
     }
 
@@ -116,16 +116,16 @@ public class Game {
      */
     public void setCurrentRoom(Room room) {
         if (game.corridorMap != null) {
-            for (Corridor corridor : game.corridorMap) {
+            for (RoomConnection corridor : game.corridorMap) {
                 if (corridor.getStartingRoom().equals(room)) {
                     game.currentRoom = corridor.getStartingRoom();
-                    GameGUI.setImagePanel(game.currentRoom.getName());
+                    GamePanel.setImagePanel(game.currentRoom.getName());
                     return;
                 }
             }
         }
         game.currentRoom = room;
-        GameGUI.setImagePanel(game.currentRoom.getName());
+        GamePanel.setImagePanel(game.currentRoom.getName());
     }
     
     /**
@@ -148,7 +148,7 @@ public class Game {
     /**
      * @return corridorMap
      */
-    public List<Corridor> getCorridorMap() {
+    public List<RoomConnection> getCorridorMap() {
         return game.corridorMap;
     }
 
@@ -156,7 +156,7 @@ public class Game {
      * Imposta la mappa dei corridoi
      * @param corridorsMap 
      */
-    public void setCorridorMap(List<Corridor> corridorsMap) {
+    public void setCorridorMap(List<RoomConnection> corridorsMap) {
         game.corridorMap = corridorsMap;
     }
 
@@ -166,7 +166,7 @@ public class Game {
      * @param r2 arrivingRoom
      */
     public void unlockCorridor(String r1, String r2) {
-        for (Corridor corridor : game.corridorMap) {
+        for (RoomConnection corridor : game.corridorMap) {
             if (corridor.getStartingRoom().getName().equals(r1) && corridor.getArrivingRoom().getName().equals(r2)) {
                 corridor.setLocked(false);
             }

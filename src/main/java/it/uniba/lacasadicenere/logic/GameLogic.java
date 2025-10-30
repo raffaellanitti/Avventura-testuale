@@ -8,10 +8,10 @@ package it.uniba.lacasadicenere.logic;
 import it.uniba.lacasadicenere.entity.Game;
 import it.uniba.lacasadicenere.entity.Item;
 import it.uniba.lacasadicenere.entity.ItemContainer;
-import it.uniba.lacasadicenere.interactionManager.OutputDisplayManager;
-import it.uniba.lacasadicenere.database.DatabaseConnection;
+import it.uniba.lacasadicenere.interactionManager.OutputService;
+import it.uniba.lacasadicenere.database.DatabaseH2;
 import it.uniba.lacasadicenere.interactionManager.MirrorGame;
-import it.uniba.lacasadicenere.interactionManager.UserInputFlow;
+import it.uniba.lacasadicenere.interactionManager.InputService;
 
 
 /**
@@ -58,7 +58,7 @@ public class GameLogic {
                 return false; 
             }
             game.removeInventory(item1);
-             DatabaseConnection.printFromDB("Usa", game.getCurrentRoom().getName(), 
+             DatabaseH2.printFromDB("Usa", game.getCurrentRoom().getName(), 
             "true", "Fiammiferi", "Candela");
              game.unlockCorridor("Stanza1", "Stanza2");
             return true;
@@ -79,7 +79,7 @@ public class GameLogic {
                         return false; 
                     }
             game.removeInventory(item1);
-            DatabaseConnection.printFromDB("Usa", game.getCurrentRoom().getName(), 
+            DatabaseH2.printFromDB("Usa", game.getCurrentRoom().getName(), 
             "true", "Chiave", "Scrigno");
             return true;
         }
@@ -117,15 +117,15 @@ public class GameLogic {
             boolean hasDiario = game.getCurrentRoom().getItems().stream().anyMatch(i -> i.hasName("Diario"));
 
             if(hasCandela && hasAmuleto && hasDiario) {
-                while(UserInputFlow.Event != 0) {
+                while(InputService.Event != 0) {
                     try {
                         Thread.sleep(100); 
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
                 }
-                UserInputFlow.Event = 2;
-                UserInputFlow.gameFlow("");
+                InputService.Event = 2;
+                InputService.gameFlow("");
             }
         }
     }

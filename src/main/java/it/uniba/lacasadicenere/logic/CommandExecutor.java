@@ -8,16 +8,16 @@
  */
 package it.uniba.lacasadicenere.logic;
 
-import it.uniba.lacasadicenere.database.DatabaseConnection;
+import it.uniba.lacasadicenere.database.DatabaseH2;
 import it.uniba.lacasadicenere.entity.Item;
 import it.uniba.lacasadicenere.entity.ItemContainer;
 import it.uniba.lacasadicenere.entity.Game;
-import it.uniba.lacasadicenere.entity.Corridor;
+import it.uniba.lacasadicenere.entity.RoomConnection;
 import it.uniba.lacasadicenere.type.CommandType;
 import it.uniba.lacasadicenere.type.CommandExecutorKey; 
 import it.uniba.lacasadicenere.type.CommandBehavior;
 import it.uniba.lacasadicenere.type.ParserOutput;
-import it.uniba.lacasadicenere.interactionManager.OutputDisplayManager;
+import it.uniba.lacasadicenere.interactionManager.OutputService;
 
 import java.util.HashMap;
 
@@ -35,7 +35,7 @@ public class CommandExecutor {
      */
     private CommandBehavior createDirectionCommandBehavior(CommandType direction) {
     return p -> {
-        Corridor corridor = game.getCorridorMap().stream()
+        RoomConnection corridor = game.getCorridorMap().stream()
                 .filter(c -> c.getStartingRoom().getName().equals(game.getCurrentRoom().getName()) 
                           && c.getDirection() == direction)
                 .findFirst()
@@ -43,11 +43,11 @@ public class CommandExecutor {
         
         if(corridor != null && !corridor.isLocked()) {
             game.setCurrentRoom(corridor.getArrivingRoom());
-            DatabaseConnection.printFromDB("Osserva", game.getCurrentRoom().getName(), "true", "0", "0");
+            DatabaseH2.printFromDB("Osserva", game.getCurrentRoom().getName(), "true", "0", "0");
         } else if (corridor != null && corridor.isLocked()) {
-            OutputDisplayManager.displayText("Il corridoio verso " + direction + " è bloccato!");
+            OutputService.displayText("Il corridoio verso " + direction + " è bloccato!");
         } else {
-            OutputDisplayManager.displayText("Non c'è un passaggio verso " + direction + "!");
+            OutputService.displayText("Non c'è un passaggio verso " + direction + "!");
         }
     };  
 }
@@ -71,31 +71,28 @@ public CommandExecutor(Game game) {
             createDirectionCommandBehavior(CommandType.OVEST));
         
     commandMap.put(new CommandExecutorKey(CommandType.OSSERVA, 0),
-    p -> DatabaseConnection.printFromDB("Osserva", game.getCurrentRoom().getName(), "true", "0", "0"));
+    p -> DatabaseH2.printFromDB("Osserva", game.getCurrentRoom().getName(), "true", "0", "0"));
 
-    commandMap.put(new CommandExecutorKey(CommandType.INVENTARIO, 0),
-    p -> game.printInventory());
-        
     commandMap.put(new CommandExecutorKey(CommandType.OSSERVA, 1),
     p -> {
         if(game.getCurrentRoom().getItems().contains(p.getItem1())) {
-            DatabaseConnection.printFromDB("Osserva", game.getCurrentRoom().getName(), "true", p.getItem1().getName(), "0");
+            DatabaseH2.printFromDB("Osserva", game.getCurrentRoom().getName(), "true", p.getItem1().getName(), "0");
         } else if(game.getInventory().contains(p.getItem1())) {
-            OutputDisplayManager.displayText("Hai " + p.getItem1().getName() + " nell'inventario.");
+            OutputService.displayText("Hai " + p.getItem1().getName() + " nell'inventario.");
         } else {
-            OutputDisplayManager.displayText("Non c'è " + p.getItem1().getName() + " qui.");
+            OutputService.displayText("Non c'è " + p.getItem1().getName() + " qui.");
         }
     });
     
     commandMap.put(new CommandExecutorKey(CommandType.PRENDI, 1),
     p -> {
         if (p.getItem1() == null) {
-            OutputDisplayManager.displayText("L'oggetto specificato non è stato riconosciuto o non è disponibile in questo momento.");
+            OutputService.displayText("L'oggetto specificato non è stato riconosciuto o non è disponibile in questo momento.");
             return;
         }
                     
         if(game.getInventory().contains(p.getItem1())) {
-            OutputDisplayManager.displayText("Hai già " + p.getItem1().getName() + " nell'inventario.");
+            OutputService.displayText("Hai già " + p.getItem1().getName() + " nell'inventario.");
             return;
         } 
         
@@ -104,9 +101,9 @@ public CommandExecutor(Game game) {
                 game.addInventory(p.getItem1());
                 game.getCurrentRoom().removeItem(p.getItem1().getName());
                 gameLogic.executePostPickupEffects(p.getItem1());
-                OutputDisplayManager.displayText("Hai raccolto " + p.getItem1().getName() + ".");
+                OutputService.displayText("Hai raccolto " + p.getItem1().getName() + ".");
             } else {
-                OutputDisplayManager.displayText(p.getItem1().getName() + " non può essere raccolto.");
+                OutputService.displayText(p.getItem1().getName() + " non può essere raccolto.");
             }
             return;
         }
@@ -118,13 +115,13 @@ public CommandExecutor(Game game) {
                 parentContainer.remove(p.getItem1()); 
                 game.addInventory(p.getItem1());
                 gameLogic.executePostPickupEffects(p.getItem1(), parentContainer); 
-                OutputDisplayManager.displayText("Hai preso " + p.getItem1().getName() + " da " + parentContainer.getName() + ".");
+                OutputService.displayText("Hai preso " + p.getItem1().getName() + " da " + parentContainer.getName() + ".");
             } else {
-                OutputDisplayManager.displayText("Non puoi raccogliere " + p.getItem1().getName() + ".");
+                OutputService.displayText("Non puoi raccogliere " + p.getItem1().getName() + ".");
             }
             return;
         }
-        OutputDisplayManager.displayText(p.getItem1().getName() + " non è nella stanza.");
+        OutputService.displayText(p.getItem1().getName() + " non è nella stanza.");
     });
 
     commandMap.put(new CommandExecutorKey(CommandType.USA, 1),
@@ -132,23 +129,23 @@ public CommandExecutor(Game game) {
         if(game.getInventory().contains(p.getItem1())) {
             boolean used = gameLogic.executeUseSingleItem(p.getItem1());
             if(!used) {
-                OutputDisplayManager.displayText("Non succede nulla usando " + p.getItem1().getName() + ".");
+                OutputService.displayText("Non succede nulla usando " + p.getItem1().getName() + ".");
                 return;
             }
         } else {
-            OutputDisplayManager.displayText("Non possiedi questo oggetto.");
+            OutputService.displayText("Non possiedi questo oggetto.");
         }
     });
 
     commandMap.put(new CommandExecutorKey(CommandType.USA, 2),
     p -> {
         if(!game.getInventory().contains(p.getItem1())) {
-            OutputDisplayManager.displayText("Non possiedi " + p.getItem1().getName() + ".");
+            OutputService.displayText("Non possiedi " + p.getItem1().getName() + ".");
             return; 
         }
 
         if(p.getItem2() == null) {
-            OutputDisplayManager.displayText("Devi specificare il secondo oggetto da usare.");
+            OutputService.displayText("Devi specificare il secondo oggetto da usare.");
             return;
         }
                     
@@ -156,14 +153,14 @@ public CommandExecutor(Game game) {
         boolean hasItem2InRoom = game.getCurrentRoom().getItems().contains(p.getItem2());
         
         if(!hasItem2InInventory && !hasItem2InRoom) {
-            OutputDisplayManager.displayText("Non puoi usare " + p.getItem1().getName() + 
+            OutputService.displayText("Non puoi usare " + p.getItem1().getName() + 
                 " con " + p.getItem2().getName() + " perché non è disponibile.");
             return;
         }
                     
         boolean used = gameLogic.executeUseDoubleItem(p.getItem1(), p.getItem2());
         if(!used) {
-            OutputDisplayManager.displayText("Non succede nulla usando " + 
+            OutputService.displayText("Non succede nulla usando " + 
             p.getItem1().getName() + " con " + p.getItem2().getName() + ".");
         }
     });
@@ -171,7 +168,7 @@ public CommandExecutor(Game game) {
     commandMap.put(new CommandExecutorKey(CommandType.LASCIA, 1), 
     p -> {
         if (!game.getInventory().contains(p.getItem1())) {
-            OutputDisplayManager.displayText("Non possiedi " + p.getItem1().getName() + ".");
+            OutputService.displayText("Non possiedi " + p.getItem1().getName() + ".");
             return;
         }
 
@@ -179,7 +176,7 @@ public CommandExecutor(Game game) {
         if (game.getCurrentRoom() != null) {
             game.getCurrentRoom().addItems(p.getItem1());
         }
-        OutputDisplayManager.displayText("Hai lasciato " + p.getItem1().getName() + " nella stanza.");
+        OutputService.displayText("Hai lasciato " + p.getItem1().getName() + " nella stanza.");
 
         gameLogic.checkEndGameCondition();
     });
@@ -231,7 +228,7 @@ public CommandExecutor(Game game) {
         if (behavior != null) {
             behavior.execute(p);
         } else {
-            OutputDisplayManager.displayText("Comando non riconosciuto o non valido con gli argomenti forniti.");
+            OutputService.displayText("Comando non riconosciuto o non valido con gli argomenti forniti.");
         }
     }
 }

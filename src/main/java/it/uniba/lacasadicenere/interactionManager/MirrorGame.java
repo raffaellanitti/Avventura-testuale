@@ -1,9 +1,9 @@
 package it.uniba.lacasadicenere.interactionManager;
 
 import it.uniba.lacasadicenere.entity.Game;
-import it.uniba.lacasadicenere.database.DatabaseConnection;
-import it.uniba.lacasadicenere.gui.GameGUI;
-import it.uniba.lacasadicenere.util.EffettiTesto;
+import it.uniba.lacasadicenere.database.DatabaseH2;
+import it.uniba.lacasadicenere.ui.GamePanel;
+import it.uniba.lacasadicenere.util.TextAnimator;
 
 /**
  * Classe che gestisce il gioco degli specchi.
@@ -39,16 +39,16 @@ public class MirrorGame {
      */
     public void startGame() {
         Game game = Game.getInstance();
-        GameGUI.setImagePanel(game.getCurrentRoom().getName());
+        GamePanel.setImagePanel(game.getCurrentRoom().getName());
         
-        DatabaseConnection.printFromDB("Usa", game.getCurrentRoom().getName(), 
+        DatabaseH2.printFromDB("Usa", game.getCurrentRoom().getName(), 
         "true", "Telefono", "0"); 
         
-        UserInputManager.getUserInput();
+        GameFlowController.getUserInput();
 
-        OutputDisplayManager.displayText(QUESTION + "\nScrivi il numero di specchi che vedi:");
+        OutputService.displayText(QUESTION + "\nScrivi il numero di specchi che vedi:");
 
-        UserInputFlow.Event = 1;
+        InputService.Event = 1;
     }
 
     /**
@@ -57,7 +57,7 @@ public class MirrorGame {
      */
     public void checkAnswer(String answer) {
         if (answer == null || answer.trim().isEmpty()) {
-            OutputDisplayManager.displayText("Non hai inserito nulla!");
+            OutputService.displayText("Non hai inserito nulla!");
             return;
         }
 
@@ -67,16 +67,16 @@ public class MirrorGame {
         if (isCorrectAnswer(cleanedAnswer)) {
 
             solved = true;
-            DatabaseConnection.printFromDB("0", "Stanza4", "Corretto", "0", "0");
+            DatabaseH2.printFromDB("0", "Stanza4", "Corretto", "0", "0");
             
             game.unlockCorridor("Stanza4", "Stanza5");
             
             //OutputDisplayManager.displayText("Hai risposto correttamente! Il passaggio a nord è ora aperto.");
             
-            UserInputFlow.Event = 0;
+            InputService.Event = 0;
 
         } else {
-            DatabaseConnection.printFromDB("0", "Stanza4", "Sbagliato", "0", "0");
+            DatabaseH2.printFromDB("0", "Stanza4", "Sbagliato", "0", "0");
 
             //OutputDisplayManager.displayText("Risposta errata. Osserva meglio gli specchi e riprova.");
         }

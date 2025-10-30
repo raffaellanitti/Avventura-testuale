@@ -6,7 +6,7 @@ package it.uniba.lacasadicenere.logic;
 
 import it.uniba.lacasadicenere.entity.*;
 import it.uniba.lacasadicenere.type.CommandType;
-import it.uniba.lacasadicenere.util.Converter;
+import it.uniba.lacasadicenere.util.GameSerializer;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,7 +25,7 @@ public class GameManager {
     /**
      * Riferimento all'istanza del convertitore.
      */
-    private final Converter converter = new Converter();
+    private final GameSerializer converter = new GameSerializer();
     
     /**
      * Inizializza una nuova istanza di GameManager.
@@ -127,7 +127,6 @@ public class GameManager {
         availableCommands.add(new Command("Est", List.of("east", "destra", "vaiDestra", "vaiADestra"), CommandType.EST));
         availableCommands.add(new Command("Ovest", List.of("west", "sinsitra", "vaiSinistra", "vaiASinistra"), CommandType.OVEST));
         availableCommands.add(new Command("Osserva", List.of("vedi", "guarda", "esamina", "look"), CommandType.OSSERVA));
-        availableCommands.add(new Command("Inventario", List.of("i", "inventory", "inv"), CommandType.INVENTARIO));
         availableCommands.add(new Command("Prendi", List.of("raccogli", "take", "recupera"), CommandType.PRENDI));
         availableCommands.add(new Command("Usa", List.of("use", "utilizza"), CommandType.USA));
         availableCommands.add(new Command("Lascia", List.of("rilascia", "poni", "togli"), CommandType.LASCIA));

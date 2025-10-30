@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package it.uniba.lacasadicenere.entity;
-import it.uniba.lacasadicenere.database.DatabaseConnection;
+import it.uniba.lacasadicenere.database.DatabaseH2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,6 +97,6 @@ public class Room {
     
     public void printDescription() {
         Game game = Game.getInstance();
-        DatabaseConnection.printFromDB("Osserva", name, "true", "0", "0");
+        DatabaseH2.printFromDB("Osserva", name, "true", "0", "0");
     }
 }
