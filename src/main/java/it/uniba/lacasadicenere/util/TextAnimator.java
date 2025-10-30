@@ -4,7 +4,7 @@
  */
 package it.uniba.lacasadicenere.util;
 
-import it.uniba.lacasadicenere.interactionManager.OutputService;
+import it.uniba.lacasadicenere.service.OutputService;
 
 /**
  * Classe Thread per gestire effetti di testo sulla GUI (scrittura lenta e pause).
@@ -13,7 +13,9 @@ public class TextAnimator extends Thread {
 
     private static boolean isWriting = false;
     
-    // Enum per definire il tipo di effetto
+    /**
+     * Tipi di effetti di testo supportati.
+     */
     public enum TipoEffetto {
         SCRITTURA,
         PAUSA
@@ -55,6 +57,9 @@ public class TextAnimator extends Thread {
         return isWriting;
     }
 
+    /**
+     * Esecuzione dell'effetto in base al tipo specificato.
+     */
     @Override
     public void run() {
         if(tipo == TipoEffetto.SCRITTURA) {

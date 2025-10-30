@@ -14,7 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import it.uniba.lacasadicenere.interactionManager.OutputService;
+import it.uniba.lacasadicenere.service.OutputService;
 
 /**
  * Classe per la gestione della connessione al database H2.

@@ -5,7 +5,8 @@ package it.uniba.lacasadicenere;
 
 import it.uniba.lacasadicenere.database.DatabaseH2;
 import it.uniba.lacasadicenere.server.RestServer;
-import it.uniba.lacasadicenere.ui.MainFrame;
+import it.uniba.lacasadicenere.view.MainFrame;
+
 /**
  * Classe principale dell'applicazione.
  */

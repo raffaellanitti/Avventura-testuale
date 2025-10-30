@@ -5,13 +5,16 @@
 package it.uniba.lacasadicenere.util;
 
 import com.google.gson.*;
-import it.uniba.lacasadicenere.entity.Item;
-import it.uniba.lacasadicenere.entity.ItemContainer;
+import it.uniba.lacasadicenere.model.Item;
+import it.uniba.lacasadicenere.model.ItemContainer;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Deserializza un oggetto Item da JSON.
+ */
 public class ItemDeserializer implements JsonDeserializer<Item> {
 
     @Override

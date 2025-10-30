@@ -7,11 +7,11 @@ package it.uniba.lacasadicenere.util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import it.uniba.lacasadicenere.entity.Game;
-import it.uniba.lacasadicenere.entity.Item;
-import it.uniba.lacasadicenere.entity.ItemContainer;
-import it.uniba.lacasadicenere.entity.Room;
-import it.uniba.lacasadicenere.entity.RoomConnection;
+import it.uniba.lacasadicenere.model.Game;
+import it.uniba.lacasadicenere.model.Item;
+import it.uniba.lacasadicenere.model.ItemContainer;
+import it.uniba.lacasadicenere.model.Room;
+import it.uniba.lacasadicenere.model.RoomConnection;
 import it.uniba.lacasadicenere.type.CommandType;
 
 import java.io.FileWriter;

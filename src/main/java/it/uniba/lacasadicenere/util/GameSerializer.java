@@ -8,11 +8,11 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 
-import it.uniba.lacasadicenere.entity.RoomConnection;
-import it.uniba.lacasadicenere.entity.Game;
-import it.uniba.lacasadicenere.entity.Item;
-import it.uniba.lacasadicenere.entity.Room;
-import it.uniba.lacasadicenere.logic.GameManager;
+import it.uniba.lacasadicenere.model.RoomConnection;
+import it.uniba.lacasadicenere.model.Game;
+import it.uniba.lacasadicenere.model.Item;
+import it.uniba.lacasadicenere.model.Room;
+import it.uniba.lacasadicenere.controller.GameController;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -31,7 +31,7 @@ public class GameSerializer {
     
     /**
      * Metodo per convertire i file JSON in classi Java.
-     * @return
+     * @return Map<String, Item>
      */
     public Map<String, Item> convertJsonToJavaClass() {
         ensureResourceDirectoriesExist();
@@ -40,7 +40,7 @@ public class GameSerializer {
 
     /**
      * Metodo per caricare lo stato di gioco da un file JSON.
-     * @return
+     * @return Map<String, Item>
      */
     public Map<String, Item> loadGame() {
         return processJsonFiles("src/main/resources/LoadedGame.json", "src/main/resources/LoadedItems.json");
@@ -73,7 +73,7 @@ public class GameSerializer {
      * Metodo per processare i file JSON e convertire in classi Java.
      * @param gameFilePath
      * @param itemsFilePath
-     * @return
+     * @return Map<String, Item>
      */
     private Map<String, Item> processJsonFiles(String gameFilePath, String itemsFilePath) {
         Gson gson = new GsonBuilder()
@@ -175,7 +175,7 @@ public class GameSerializer {
     public void convertItemsToJson() {
         Gson gson = new Gson();
         Game game = Game.getInstance();
-        GameManager gameManager = new GameManager();
+        GameController gameManager = new GameController();
         Set<Item> items = gameManager.getItems();
 
         Set<Room> rooms = game.getCorridorMap().stream()
