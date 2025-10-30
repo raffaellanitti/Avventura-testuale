@@ -280,13 +280,59 @@ public class MenuPanel extends JPanel {
             showMessageDialog(null, "Nessuna partita salvata trovata.", "Errore", ERROR_MESSAGE);
         }
     }
-    
+
     /**
-     * Azione eseguita al click del bottone "Riconoscimenti"
-     * @param evt
-     */
+    * Azione eseguita al click del bottone "Riconoscimenti"
+    * Apre la pagina HTML dei crediti nel browser predefinito.
+    * @param evt
+    */
     private void creditsActionPerformed(ActionEvent evt) {
-        CardLayout cl = (CardLayout) getParent().getLayout();
-        cl.show(getParent(), "CreditsGUI");
+        try {
+            String apiUrl = "http://localhost:8080/api/credits";
+        
+            if (java.awt.Desktop.isDesktopSupported()) {
+                java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+            
+                if (desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
+                    desktop.browse(new java.net.URI(apiUrl));
+                } else {
+                    showMessageDialog(this, 
+                        "Il sistema non supporta l'apertura del browser.\n" +
+                        "Apri manualmente: " + apiUrl, 
+                        "Info", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                showMessageDialog(this, 
+                    "Desktop non supportato su questo sistema.\n" +
+                    "Apri manualmente: " + apiUrl, 
+                    "Info", 
+                    JOptionPane.INFORMATION_MESSAGE);
+         }
+        
+        } catch (java.net.URISyntaxException e) {
+            e.printStackTrace();
+            showMessageDialog(this, 
+                "URL non valido: " + e.getMessage(), 
+                "Errore", 
+                ERROR_MESSAGE);
+            
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+         showMessageDialog(this, 
+                "Impossibile aprire il browser.\n" +
+                "Assicurati che il server REST sia avviato.\n\n" +
+                "Puoi aprire manualmente: http://localhost:8080/api/credits\n\n" +
+                "Errore: " + e.getMessage(), 
+                "Errore", 
+                ERROR_MESSAGE);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            showMessageDialog(this, 
+                "Errore imprevisto: " + e.getMessage(), 
+                "Errore", 
+                ERROR_MESSAGE);
+        }
     }
 }

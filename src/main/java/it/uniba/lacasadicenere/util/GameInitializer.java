@@ -96,7 +96,6 @@ public class GameInitializer {
             Room stanza4 = new Room("Stanza4", "Stanza degli specchi", null);
             Room stanza5 = new Room("Stanza5", "Cripta finale", null);
             
-            // Aggiungi oggetti alle stanze
             stanza1.addItems(items.stream()
                     .filter(i -> i.getName().equals("Tavolo") || 
                             i.getName().equals("Foglio") || 
@@ -121,7 +120,6 @@ public class GameInitializer {
             
             List<RoomConnection> corridoi = new ArrayList<>();
             
-            // Corridoio 1-2 (bloccato all'inizio)
             RoomConnection c1a = new RoomConnection();
             c1a.setStartingRoom(stanza1);
             c1a.setDirection(CommandType.NORD);
@@ -136,7 +134,6 @@ public class GameInitializer {
             c1b.setArrivingRoom(stanza1);
             corridoi.add(c1b);
             
-            // Corridoio 2-3 (bloccato finché non prendi l'amuleto)
             RoomConnection c2a = new RoomConnection();
             c2a.setStartingRoom(stanza2);
             c2a.setDirection(CommandType.EST);
@@ -151,7 +148,6 @@ public class GameInitializer {
             c2b.setArrivingRoom(stanza2);
             corridoi.add(c2b);
             
-            // Corridoio 3-4 (bloccato finché non usi il diario)
             RoomConnection c3a = new RoomConnection();
             c3a.setStartingRoom(stanza3);
             c3a.setDirection(CommandType.NORD);
@@ -166,7 +162,6 @@ public class GameInitializer {
             c3b.setArrivingRoom(stanza3);
             corridoi.add(c3b);
             
-            // Corridoio 4-5 (bloccato finché non risolvi l'enigma)
             RoomConnection c4a = new RoomConnection();
             c4a.setStartingRoom(stanza4);
             c4a.setDirection(CommandType.NORD);
@@ -184,9 +179,7 @@ public class GameInitializer {
             game.setCorridorMap(corridoi);
             
             game.setCurrentRoom(stanza1);
-            game.setCurrentTime("00:00:00");
             
-            // Inventario iniziale
             List<Item> inventario = new ArrayList<>();
             inventario.add(new Item("Telefono", "Il tuo cellulare, pronto per essere usato.", true,
                     Arrays.asList("Telefonino", "Cellulare", "Phone")));

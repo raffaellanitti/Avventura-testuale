@@ -50,7 +50,7 @@ public class Parser {
         for (Item item : availableItems) {
             if (item instanceof ItemContainer) {
                 ItemContainer container = (ItemContainer) item;
-                if (container.getList() != null) {  // FIX: usa getList()
+                if (container.getList() != null) {  
                     allItems.addAll(container.getList());
                 }
             }

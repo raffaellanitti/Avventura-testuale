@@ -1,7 +1,5 @@
 package it.uniba.lacasadicenere.ui;
 
-import it.uniba.lacasadicenere.entity.Game;
-import it.uniba.lacasadicenere.interactionManager.OutputService;
 import it.uniba.lacasadicenere.interactionManager.GameFlowController;
 import it.uniba.lacasadicenere.logic.GameManager;
 
@@ -17,7 +15,6 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Insets;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -273,9 +270,7 @@ public class GamePanel extends JPanel {
      */
     private void saveFile() throws IOException, ClassNotFoundException {
         GameManager gameManager = new GameManager();
-        Game game = Game.getInstance();
         
-        game.setCurrentTime("00:00:00");
         gameManager.saveGame();
         JOptionPane.showMessageDialog(this, "Partita salvata con successo!", "Salva", JOptionPane.INFORMATION_MESSAGE);
         goBack();

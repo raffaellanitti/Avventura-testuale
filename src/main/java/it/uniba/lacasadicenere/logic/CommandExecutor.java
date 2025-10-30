@@ -28,7 +28,7 @@ public class CommandExecutor {
     
     private Game game;
     private final HashMap<CommandExecutorKey, CommandBehavior> commandMap;
-    private GameLogic gameLogic;
+    private Engine gameLogic;
 
     /**
      * Crea un comportamento per i comandi di movimento direzionale.
@@ -58,7 +58,7 @@ public class CommandExecutor {
  */
 public CommandExecutor(Game game) {
     this.game = game;
-    this.gameLogic = new GameLogic(game);
+    this.gameLogic = new Engine(game);
     commandMap = new HashMap<>();
     
     commandMap.put(new CommandExecutorKey(CommandType.NORD, 0),

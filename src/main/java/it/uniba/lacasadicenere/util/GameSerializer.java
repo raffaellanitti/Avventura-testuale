@@ -130,11 +130,10 @@ public class GameSerializer {
             throw new RuntimeException(e);
         }
 
-        // Carica Items.json
         try {
             byte[] fileBytes = Files.readAllBytes(Paths.get(itemsFilePath));
             if(fileBytes.length == 0) {
-                return items; // ritorna items già caricati da Game.json
+                return items; 
             }
             try (JsonReader reader = new JsonReader(new FileReader(itemsFilePath))) {
                 Type itemListType = new TypeToken<List<Item>>(){}.getType();

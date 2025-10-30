@@ -35,11 +35,9 @@ public class MainFrame extends JFrame {
         
         JPanel cards = new JPanel(new CardLayout());
         MenuPanel menu = new MenuPanel();
-        CreditsPanel credits = new CreditsPanel();
         game = new GamePanel();
 
         cards.add(menu, "MenuGUI");
-        cards.add(credits, "CreditsGUI");
         cards.add(game, "GameGUI");
 
         add(cards);

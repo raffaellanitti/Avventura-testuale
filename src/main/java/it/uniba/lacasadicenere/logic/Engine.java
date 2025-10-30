@@ -17,7 +17,7 @@ import it.uniba.lacasadicenere.interactionManager.InputService;
 /**
  * Classe per la gestione della logica di gioco.
  */
-public class GameLogic {
+public class Engine {
     
     /**
      * Riferimento all'istanza del gioco.
@@ -48,7 +48,7 @@ public class GameLogic {
      * Costrutture della classe GameLogic
      * @param game 
      */
-    public GameLogic(Game game) {
+    public Engine(Game game) {
         this.game = game;
     }
     

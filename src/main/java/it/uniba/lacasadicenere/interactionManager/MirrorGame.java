@@ -3,7 +3,6 @@ package it.uniba.lacasadicenere.interactionManager;
 import it.uniba.lacasadicenere.entity.Game;
 import it.uniba.lacasadicenere.database.DatabaseH2;
 import it.uniba.lacasadicenere.ui.GamePanel;
-import it.uniba.lacasadicenere.util.TextAnimator;
 
 /**
  * Classe che gestisce il gioco degli specchi.
@@ -71,14 +70,10 @@ public class MirrorGame {
             
             game.unlockCorridor("Stanza4", "Stanza5");
             
-            //OutputDisplayManager.displayText("Hai risposto correttamente! Il passaggio a nord è ora aperto.");
-            
             InputService.Event = 0;
 
         } else {
             DatabaseH2.printFromDB("0", "Stanza4", "Sbagliato", "0", "0");
-
-            //OutputDisplayManager.displayText("Risposta errata. Osserva meglio gli specchi e riprova.");
         }
     }
 

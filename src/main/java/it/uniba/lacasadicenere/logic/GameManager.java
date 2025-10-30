@@ -49,12 +49,7 @@ public class GameManager {
     public boolean loadGame() {
         items = converter.loadGame();
         
-        try {
-            items.get(1);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return items != null && !items.isEmpty();
     }
     
     /**

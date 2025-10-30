@@ -16,7 +16,7 @@ import java.awt.FontMetrics;
 public class OutputService {
 
     private static final int MARGIN = 10; 
-    private static final Object DISPLAY_LOCK = new Object(); // Mutex globale
+    private static final Object DISPLAY_LOCK = new Object(); 
 
     /**
      * Visualizza il testo formattato nella GUI.
@@ -38,7 +38,6 @@ public class OutputService {
             TextAnimator effetto = new TextAnimator(formattedText + "\n", 30);
             effetto.start();
             
-            // Aspetta che l'effetto finisca prima di sbloccare
             while (TextAnimator.isWriting()) {
                 try {
                     DISPLAY_LOCK.wait(50);

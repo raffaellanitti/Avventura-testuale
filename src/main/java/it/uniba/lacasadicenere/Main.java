@@ -4,6 +4,7 @@
 package it.uniba.lacasadicenere;
 
 import it.uniba.lacasadicenere.database.DatabaseH2;
+import it.uniba.lacasadicenere.server.RestServer;
 import it.uniba.lacasadicenere.ui.MainFrame;
 /**
  * Classe principale dell'applicazione.
@@ -20,6 +21,14 @@ public class Main {
         try {
             DatabaseH2.connect();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            RestServer server = new RestServer();
+            server.startServer();
+        } catch (Exception e) {
+            System.err.println("Errore nell'avvio del server REST: " + e.getMessage());
             e.printStackTrace();
         }
     }

@@ -20,7 +20,6 @@ public class ItemDeserializer implements JsonDeserializer<Item> {
         
         JsonObject obj = json.getAsJsonObject();
         
-        // Se ha il campo "list", è un ItemContainer
         if (obj.has("list")) {
             String name = obj.get("name").getAsString();
             String description = obj.get("description").getAsString();
@@ -36,7 +35,6 @@ public class ItemDeserializer implements JsonDeserializer<Item> {
             
             ItemContainer container = new ItemContainer(name, description, pickable, aliases);
             
-            // Deserializza ricorsivamente gli item contenuti
             if (obj.has("list")) {
                 JsonArray listArray = obj.getAsJsonArray("list");
                 for (JsonElement e : listArray) {
@@ -48,7 +46,6 @@ public class ItemDeserializer implements JsonDeserializer<Item> {
             return container;
         }
         
-        // Altrimenti è un Item normale
         String name = obj.get("name").getAsString();
         String description = obj.get("description").getAsString();
         boolean pickable = obj.get("isPickable").getAsBoolean();

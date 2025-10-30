@@ -91,12 +91,19 @@ public class Room {
         this.items.addAll(Arrays.asList(items));
     }
     
+    /**
+     * Rimuove un oggetto dalla lista degli oggetti presenti nella stanza
+     * in base al nome
+     * @param name nome dell'oggetto da rimuovere
+     */
     public void removeItem(String name) {
         this.items.removeIf(item -> item.getName().equals(name));
     }
     
+    /**
+     * Stampa la descrizione della stanza
+     */
     public void printDescription() {
-        Game game = Game.getInstance();
         DatabaseH2.printFromDB("Osserva", name, "true", "0", "0");
     }
 }

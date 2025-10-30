@@ -26,11 +26,6 @@ public class Game {
     private Room currentRoom;
     
     /**
-     * 
-     */
-    private String currentTime;
-    
-    /**
      * Lista di tutti i collegamenti tra le stanza
      */
     private List<RoomConnection> corridorMap;
@@ -128,23 +123,6 @@ public class Game {
         GamePanel.setImagePanel(game.currentRoom.getName());
     }
     
-    /**
-     * 
-     * @return 
-     */
-    public String getCurrentTime() {
-        return game.currentTime;
-    }
-
-    /**
-     *
-     * @param currentTime 
-     */
-    public void setCurrentTime(String currentTime) {
-        game.currentTime = currentTime;
-    }
-
-
     /**
      * @return corridorMap
      */

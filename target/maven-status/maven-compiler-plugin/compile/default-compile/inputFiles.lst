@@ -1,8 +1,8 @@
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/logic/Parser.java
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/entity/Command.java
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/interactionManager/OutputService.java
+/Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/server/RestServer.java
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/entity/Item.java
-/Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/logic/GameLogic.java
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/util/GameSerializer.java
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/ui/MenuPanel.java
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/database/DatabaseH2.java
@@ -14,10 +14,11 @@
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/Main.java
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/type/CommandExecutorKey.java
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/logic/CommandExecutor.java
-/Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/ui/CreditsPanel.java
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/type/CommandType.java
+/Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/logic/Engine.java
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/ui/HelpDialog.java
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/util/ItemDeserializer.java
+/Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/server/CreditsHandler.java
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/interactionManager/InputService.java
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/type/ParserOutput.java
 /Users/raffaellanitti/LaCasaDiCenere/src/main/java/it/uniba/lacasadicenere/interactionManager/MirrorGame.java
