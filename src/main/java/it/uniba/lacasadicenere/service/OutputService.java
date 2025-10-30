@@ -15,7 +15,7 @@ import java.awt.FontMetrics;
  */
 public class OutputService {
 
-    private static final int MARGIN = 10; 
+    private static final int MARGIN = 30; 
     private static final Object DISPLAY_LOCK = new Object(); 
 
     /**
@@ -24,7 +24,6 @@ public class OutputService {
      */
     public static void displayText(String text) {
         synchronized (DISPLAY_LOCK) {
-            // Aspetta che eventuali effetti precedenti finiscano
             while (TextAnimator.isWriting()) {
                 try {
                     DISPLAY_LOCK.wait(50);
