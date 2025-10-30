@@ -20,3 +20,72 @@ Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection wa
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 16 more
+2025-10-30 13:23:23.986749+01:00 jdbc[5]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-224]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+	at it.uniba.lacasadicenere.database.DatabaseH2.connect(DatabaseH2.java:61)
+	at it.uniba.lacasadicenere.database.DatabaseH2.printFromDB(DatabaseH2.java:113)
+	at it.uniba.lacasadicenere.logic.GameLogic.executeUseDoubleItem(GameLogic.java:81)
+	at it.uniba.lacasadicenere.logic.CommandExecutor.lambda$new$6(CommandExecutor.java:161)
+	at it.uniba.lacasadicenere.logic.CommandExecutor.execute(CommandExecutor.java:229)
+	at it.uniba.lacasadicenere.interactionManager.InputService.parserFlow(InputService.java:78)
+	at it.uniba.lacasadicenere.interactionManager.InputService.gameFlow(InputService.java:41)
+	at it.uniba.lacasadicenere.interactionManager.GameFlowController.lambda$startInputListener$0(GameFlowController.java:49)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 17 more
+2025-10-30 13:26:33.783217+01:00 jdbc[5]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-224]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+	at it.uniba.lacasadicenere.database.DatabaseH2.connect(DatabaseH2.java:61)
+	at it.uniba.lacasadicenere.database.DatabaseH2.printFromDB(DatabaseH2.java:113)
+	at it.uniba.lacasadicenere.logic.GameLogic.executeUseDoubleItem(GameLogic.java:81)
+	at it.uniba.lacasadicenere.logic.CommandExecutor.lambda$new$6(CommandExecutor.java:161)
+	at it.uniba.lacasadicenere.logic.CommandExecutor.execute(CommandExecutor.java:229)
+	at it.uniba.lacasadicenere.interactionManager.InputService.parserFlow(InputService.java:78)
+	at it.uniba.lacasadicenere.interactionManager.InputService.gameFlow(InputService.java:41)
+	at it.uniba.lacasadicenere.interactionManager.GameFlowController.lambda$startInputListener$0(GameFlowController.java:49)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 17 more
+2025-10-30 13:28:17.596835+01:00 jdbc[5]: null
+org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-224]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
+	at it.uniba.lacasadicenere.database.DatabaseH2.connect(DatabaseH2.java:61)
+	at it.uniba.lacasadicenere.database.DatabaseH2.printFromDB(DatabaseH2.java:113)
+	at it.uniba.lacasadicenere.logic.GameLogic.executeUseDoubleItem(GameLogic.java:81)
+	at it.uniba.lacasadicenere.logic.CommandExecutor.lambda$new$6(CommandExecutor.java:164)
+	at it.uniba.lacasadicenere.logic.CommandExecutor.execute(CommandExecutor.java:232)
+	at it.uniba.lacasadicenere.interactionManager.InputService.parserFlow(InputService.java:78)
+	at it.uniba.lacasadicenere.interactionManager.InputService.gameFlow(InputService.java:41)
+	at it.uniba.lacasadicenere.interactionManager.GameFlowController.lambda$startInputListener$0(GameFlowController.java:49)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection was not closed by the application and is garbage collected [90018-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 17 more

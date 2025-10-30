@@ -25,6 +25,26 @@ public class GameLogic {
     private Game game;
     
     /**
+     * Flag per tracciare se lo scrigno è stato aperto
+     */
+    private boolean open = false;
+    
+    /**
+     * Getter per verificare se lo scrigno è aperto
+     * @return 
+     */
+    public boolean isOpen() {
+        return open;
+    }
+    
+    /**
+     * Setter per impostare lo stato dello scrigno 
+     * @param open 
+     */
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
+    /**
      * Costrutture della classe GameLogic
      * @param game 
      */
@@ -70,20 +90,37 @@ public class GameLogic {
                     .findFirst()
                     .orElse(null);
 
-                    if(scrigno == null || !(scrigno instanceof ItemContainer)) {
-                        return false; 
-                    }
+            if(scrigno == null || !(scrigno instanceof ItemContainer)) {
+                return false; 
+            }
 
-                    ItemContainer scrignoContainer = (ItemContainer) scrigno;
-                    if(scrignoContainer.getList() == null || scrignoContainer.getList().isEmpty()) {
-                        return false; 
-                    }
+            ItemContainer scrignoContainer = (ItemContainer) scrigno;
+                if(scrignoContainer.getList() == null || scrignoContainer.getList().isEmpty()) {
+                return false; 
+            }
             game.removeInventory(item1);
+            open = true;
             DatabaseH2.printFromDB("Usa", game.getCurrentRoom().getName(), 
             "true", "Chiave", "Scrigno");
             return true;
         }
         return false;
+    }
+    
+    /**
+     * Metodo per verificare se un oggetto può essere preso da un contenitore.
+     * @param i
+     * @param parentContainer
+     * @return true se l'oggetto può essere preso, false altrimenti
+     */
+    public boolean canPickupFromContainer(Item i, ItemContainer parentContainer) {
+        if (i.hasName("Amuleto") && parentContainer.hasName("Scrigno")) {
+            if (!open) {
+                OutputService.displayText("Lo scrigno è chiuso! Devi prima aprirlo con una chiave.");
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

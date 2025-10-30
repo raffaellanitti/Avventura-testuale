@@ -112,6 +112,9 @@ public CommandExecutor(Game game) {
 
         if (parentContainer != null) {
             if (p.getItem1().isPickable()) { 
+                if (!gameLogic.canPickupFromContainer(p.getItem1(), parentContainer)) {
+                    return; // Il messaggio di errore è già stato mostrato in canPickupFromContainer
+                }
                 parentContainer.remove(p.getItem1()); 
                 game.addInventory(p.getItem1());
                 gameLogic.executePostPickupEffects(p.getItem1(), parentContainer); 
